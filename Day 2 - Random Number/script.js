@@ -1,13 +1,22 @@
-const count = document.querySelector (".count")
-const buttons = document.querySelector (".buttons")
+const randomNumberContainer = document.querySelector (".count")
+const generateRandomNumberButton = document.querySelector(".generateRandomNumberButton")
 
-
-
-buttons.addEventListener("click", (event) => {
-    let minus = Math.floor(Math.random() * 3);  
-    if (minus != 0) {
-        count.innerHTML = Math.floor(Math.random() * 300);
+const setRandomNumberAsInnerHtml = (element) => {
+    const minus = Math.floor(Math.random() * 3);  
+    if (minus !== 0) {
+        element.innerHTML = Math.floor(Math.random() * 300);
     } else {
-        count.innerHTML = Math.floor(Math.random() * -300);
+        element.innerHTML = Math.floor(Math.random() * -300);
     }
-})
+}
+
+generateRandomNumberButton.addEventListener("click", () => setRandomNumberAsInnerHtml(randomNumberContainer))
+
+/**
+ * Refactoring steps:
+ * 1. Extract anonymous function into named one for better readability
+ * 2. Make new function pure by passing in the element to modify as a parameter
+ * 3. Use !== over != to have type safety
+ * 4. Change from let to const. Always use const first and only switch to let if necessary
+ * 5. Remove unused CSS and use meaningful CSS class names
+ */
