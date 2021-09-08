@@ -74,16 +74,7 @@ img {
   cursor: pointer;
 }
 
-button.subtract {
-  background-color: orangered;
-}
-
-button.reset {
+.generateRandomNumberButton {
   background-color: white;
   color: black;
 }
-
-button.add {
-  background-color: green;
-}
-
