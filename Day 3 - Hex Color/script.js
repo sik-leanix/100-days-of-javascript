@@ -7,4 +7,4 @@ buttons.addEventListener("click", (event) => {
     count.innerHTML = `#${color}`;
     document.body.style.backgroundColor = `#${color}`
 })
-console.log(Math.random().toString(16).substring(2, 8))
+
