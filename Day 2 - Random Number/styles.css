@@ -23,6 +23,7 @@ html {
 
 body {
   font-family: "Open Sans", sans-serif;
+  background: #3399ff !important;
 }
 
 p {
@@ -77,4 +78,9 @@ img {
 .generateRandomNumberButton {
   background-color: white;
   color: black;
+}
+
+.backLink {
+  font-size: 1.25rem;
+  color: white;
 }

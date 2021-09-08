@@ -23,6 +23,7 @@ html {
 
 body {
   font-family: "Open Sans", sans-serif;
+  background: #3399ff;
 }
 
 p {
@@ -89,3 +90,7 @@ button.add {
   background-color: green;
 }
 
+.backLink {
+  font-size: 1.25rem;
+  color: white;
+}

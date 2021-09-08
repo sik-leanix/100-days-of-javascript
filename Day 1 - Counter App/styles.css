@@ -23,6 +23,7 @@ html {
 
 body {
   font-family: "Open Sans", sans-serif;
+  background: #3399ff !important;
 }
 
 p {
@@ -48,7 +49,7 @@ img {
   width: 40rem;
   border: 1px solid grey;
   padding: 1rem;
-  background-color: lightblue;
+  background-color: blue;
   color: white;
   text-align: center;
   border-radius: 5px;
@@ -85,4 +86,9 @@ button.reset {
 
 button.add {
   background-color: green;
+}
+
+.backLink {
+  font-size: 1.25rem;
+  color: white;
 }
