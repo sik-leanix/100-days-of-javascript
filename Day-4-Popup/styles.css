@@ -78,10 +78,10 @@ form button {
 }
 
 form button:hover {
-  background-color: rgb(119, 225, 70);
+  background-color: rgb(1, 22, 209);
 }
 
-.modal {
+.modalWrapper {
   display: none;
   position: fixed;
   left: 0;

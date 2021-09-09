@@ -1,18 +1,25 @@
-const modal = document.querySelector(".modal");
-const btn = document.querySelector(".btn");
-const close = document.querySelector(".close");
-
-btn.addEventListener("click", openModal);
-close.addEventListener("click", closeModal);
-body.addEventListener("click", closeModal);
+const modalWrapper = document.querySelector(".modalWrapper"),
+      openModalButton = document.querySelector(".btn"),
+      closeButton = document.querySelector(".close");
 
 
-function openModal (event) {
-    event.preventDefault();
-    modal.style.display = "block";
+openModalButton.addEventListener("click", openModal);
+closeButton.addEventListener("click", closeModal);
+modalWrapper.addEventListener("click", (event) => {
+    // If the target is something else then the wrapper
+    // then the user clicked inside the modal and we do not close it.
+    if (event.target === modalWrapper) {
+        closeModal();
+    }
+});
 
+
+function openModal(e) {
+    e.preventDefault();
+    modalWrapper.style.display = "block";
 }
 
-function closeModal () {
-    modal.style.display = "none";
-}   
+
+function closeModal() {
+    modalWrapper.style.display = "none";
+}
