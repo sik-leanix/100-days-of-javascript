@@ -86,6 +86,7 @@ button {
   color: white;
   background: rgb(1, 22, 209);
   margin-left: 10px;
+  cursor: pointer;
 }
 
 p.result {
