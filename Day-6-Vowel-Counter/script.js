@@ -1,6 +1,3 @@
-const button = document.querySelector(".btn");
-
-
 const vowelCounter = (inputElement, resultElement) => {
     const inputWord = inputElement.value;
     const vowels = ['a', 'e', 'i', 'o', 'u'];
@@ -18,12 +15,17 @@ const vowelCounter = (inputElement, resultElement) => {
     }
 }
 
-button.addEventListener("click", () => vowelCounter(document.querySelector(".input-text"), document.querySelector(".result")));
+const button = document.querySelector(".btn");
+const inputText = document.querySelector(".input-text");
+
+const handleVowelCountEvent = () => vowelCounter(inputText, document.querySelector(".result"));
+
+button.addEventListener("click", handleVowelCountEvent);
 
 inputText.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
    event.preventDefault();
-   vowelCounter(document.querySelector(".input-text"), document.querySelector(".result"))
+   handleVowelCountEvent();
   }
 })
 
@@ -31,4 +33,6 @@ inputText.addEventListener("keyup", function(event) {
  * Refactoring steps:
  * 1. In order to make the vowelCounter function more reuseable the elements such as 
  * the inputWord element and the result element should be passed in as parameters.
+ * 2. The DRY principle stands for "Dont repeat yourself. Right now we repeat the code to pass the correct elements into the vowelCounter two times.
+ * Let's make that into just one time.
  */
