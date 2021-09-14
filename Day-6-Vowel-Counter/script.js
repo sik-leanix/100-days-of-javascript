@@ -1,31 +1,34 @@
 const button = document.querySelector(".btn");
-const result = document.querySelector(".result");
-const inputText = document.querySelector(".input-text");
 
 
-const vowelCounter = () => {
-    const inputWord = document.querySelector(".input-text").value;
+const vowelCounter = (inputElement, resultElement) => {
+    const inputWord = inputElement.value;
     const vowels = ['a', 'e', 'i', 'o', 'u'];
     const amountOfVowels = inputWord.toLowerCase().split("").filter((character) => vowels.includes(character)).length;
     const coloredInputWord = document.createElement("span");
     coloredInputWord.textContent = inputWord;
     coloredInputWord.style.color = 'green'
-    result.textContent = '';
+    resultElement.textContent = '';
     if (amountOfVowels === 1) {
-        result.appendChild(coloredInputWord);
-        result.innerHTML += ` has one vowel.`
+        resultElement.appendChild(coloredInputWord);
+        resultElement.innerHTML += ` has one vowel.`
     } else {
-        result.appendChild(coloredInputWord)
-        result.innerHTML += ` has ${amountOfVowels} vowels.`
+        resultElement.appendChild(coloredInputWord)
+        resultElement.innerHTML += ` has ${amountOfVowels} vowels.`
     }
 }
 
-button.addEventListener("click", vowelCounter);
+button.addEventListener("click", () => vowelCounter(document.querySelector(".input-text"), document.querySelector(".result")));
 
 inputText.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
    event.preventDefault();
-   vowelCounter()
+   vowelCounter(document.querySelector(".input-text"), document.querySelector(".result"))
   }
 })
 
+/**
+ * Refactoring steps:
+ * 1. In order to make the vowelCounter function more reuseable the elements such as 
+ * the inputWord element and the result element should be passed in as parameters.
+ */
