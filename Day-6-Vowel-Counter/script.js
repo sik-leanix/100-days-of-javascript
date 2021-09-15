@@ -2,6 +2,7 @@ const vowelCounter = (inputElement, resultElement) => {
     const inputWord = inputElement.value;
     const vowels = ['a', 'e', 'i', 'o', 'u'];
     const amountOfVowels = inputWord.toLowerCase().split("").filter((character) => vowels.includes(character)).length;
+    console.log(amountOfVowels);
     const coloredInputWord = document.createElement("span");
     coloredInputWord.textContent = inputWord;
     coloredInputWord.style.color = 'green'
