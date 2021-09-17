@@ -95,5 +95,5 @@ p.result {
   font-size: 2rem;
   font-weight: 600;
   color: grey;
-  overflow: hidden;
+  word-break: break-word;
 }
