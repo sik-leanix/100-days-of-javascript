@@ -9,7 +9,7 @@ const palindrome = () => {
     if (inputWord === "" || inputWord.length === 1) {
         result.style.color = "red";
         result.innerHTML = `You have to type in a word!`;
-    } else if (inputWord.toLowerCase() === inputWord.toLowerCase().split("").reverse().join('')) {
+    } else if (inputWord.toLowerCase().replace(/[^a-zA-Z ]/g, "").replace(/\s+/g, '') === inputWord.toLowerCase().replace(/[^a-zA-Z ]/g, "").replace(/\s+/g, '').split("").reverse().join('')) {
         result.style.color = "green";
         result.innerHTML = `${inputWord} is a palindrome!`;
     } else {
