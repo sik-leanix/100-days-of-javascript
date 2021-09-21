@@ -19,7 +19,7 @@ class Quiz {
             <button class="btn" id="btn2">C. <span id="choice2"></span></button>
             <button class="btn" id="btn3">D. <span id="choice3"></span></button>
         </div>
-        <button class="btn" id="quitQuizButton">Quit</button>
+        <button class="btn" id="quitQuizButton" style="text-align: center">Quit</button>
         <hr>
         <p>You will see your score at the end of the Quiz.</p>
     `
@@ -113,7 +113,7 @@ class Quiz {
           <h1>Quiz Completed</h1>
           <h2 id='score'>You scored: ${this.score} of ${this.questions.length}</h2>
           <div class="quiz-repeat">
-            <button class="btn" id="restartQuizButton">Take Quiz Again</button>
+            <button class="btn" id="restartQuizButton" style="text-align: center">Take Quiz Again</button>
           </div>
         `;
         this.containerElement.innerHTML = quizEndHTML;
