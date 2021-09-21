@@ -57,8 +57,14 @@ class Quiz {
         if (this._isEnded()) {
             this._showScores();
         }
-
     }
+
+    _reset() {
+        this.score = 0;
+        this.questionIndex = 0;
+        this.start();
+    }
+
 
     _isEnded() {
         return this.questionIndex === this.questions.length;
@@ -107,10 +113,12 @@ class Quiz {
           <h1>Quiz Completed</h1>
           <h2 id='score'>You scored: ${this.score} of ${this.questions.length}</h2>
           <div class="quiz-repeat">
-            <a href="index.html">Take Quiz Again</a>
+            <button class="btn" id="restartQuizButton">Take Quiz Again</button>
           </div>
         `;
         this.containerElement.innerHTML = quizEndHTML;
+        const restartButton = document.getElementById("restartQuizButton");
+        restartButton.addEventListener("click", () => this._reset());
     }
 
     _startCountdown() {
