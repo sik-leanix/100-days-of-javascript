@@ -1,4 +1,7 @@
-// CREATE A QUIZ CLASS
+/**
+ * Methods prefixed with "_" are considered private and should not be used on the outside.
+ * The only methods an outside consumer would need are Quiz.start and Quiz.guess.
+ */
 class Quiz {
     constructor(questions) {
         this.score = 0;
@@ -6,8 +9,8 @@ class Quiz {
         this.questionIndex = 0;
     }
 
-    getCurrentQuestion() {
-        return this.questions[this.questionIndex];
+    start() {
+        this.displayQuestion();
     }
 
     guess(answer) {
@@ -15,11 +18,60 @@ class Quiz {
             this.score++;
         }
         this.questionIndex++;
+        if (quiz.isEnded()) {
+            this._showScores();
+        }
+
     }
 
-    isEnded() {
+    _isEnded() {
         return this.questionIndex === this.questions.length;
-        
+    }
+
+    _getCurrentQuestion() {
+        return this.questions[this.questionIndex];
+    }
+
+    _updateProgress() {
+        const currentQuestionNumber = quiz.questionIndex + 1;
+        const ProgressElement = document.getElementById("progress");
+        ProgressElement.innerHTML =
+            `Question ${currentQuestionNumber} of ${quiz.questions.length}`;
+    }
+
+    _displayQuestion() {
+        // show question
+        const questionElement = document.getElementById("question");
+        questionElement.innerHTML = quiz.getCurrentQuestion().text;
+
+        // show options
+        const choices = quiz.getCurrentQuestion().choices;
+        for (let i = 0; i < choices.length; i++) {
+            let choiceElement = document.getElementById("choice" + i);
+            choiceElement.innerHTML = choices[i];
+            this._registerSelectGuessListener("btn" + i, choices[i])
+        }
+        this._updateProgress();
+    }
+
+    _registerSelectGuessListener(buttonId, guess) {
+        const button = document.getElementById(buttonId);
+        button.onclick = function() {
+            quiz.guess(guess);
+            displayQuestion();
+        }
+    }
+
+    _showScores() {
+        const quizEndHTML = `
+          <h1>Quiz Completed</h1>
+          <h2 id='score'>You scored: ${quiz.score} of ${quiz.questions.length}</h2>
+          <div class="quiz-repeat">
+            <a href="index.html">Take Quiz Again</a>
+          </div>
+        `;
+        const quizElement = document.getElementById("quiz");
+        quizElement.innerHTML = quizEndHTML;
     }
 }
 
@@ -36,58 +88,6 @@ class Question {
         return this.answer === choice;
     }
 }
-
-// NOW DISPLAY THE QUESTIONS
-function displayQuestion() {
-    if (quiz.isEnded()) {
-        showScores();
-    } else {
-        // show question
-        let questionElement = document.getElementById("question");
-        questionElement.innerHTML = quiz.getCurrentQuestion().text;
-
-        // show options
-        let choices = quiz.getCurrentQuestion().choices;
-        for (let i = 0; i < choices.length; i++) {
-            let choiceElement = document.getElementById("choice" + i);
-            choiceElement.innerHTML = choices[i];
-            guess("btn" + i, choices[i]);
-        }
-
-        showProgress();
-    }
-};
-
-// GUESS ANSWER
-function guess(id, guess) {
-    let button = document.getElementById(id);
-    button.onclick = function() {
-        quiz.guess(guess);
-        displayQuestion();
-    }
-};
-
-// SHOW QUIZ PROGRESS
-function showProgress() {
-    let currentQuestionNumber = quiz.questionIndex + 1;
-    let ProgressElement = document.getElementById("progress");
-    ProgressElement.innerHTML =
-        `Question ${currentQuestionNumber} of ${quiz.questions.length}`;
-};
-
-// SHOW SCORES
-function showScores() {
-    const quizEndHTML =
-        `
-    <h1>Quiz Completed</h1>
-    <h2 id='score'> Your scored: ${quiz.score} of ${quiz.questions.length}</h2>
-    <div class="quiz-repeat">
-        <a href="index.html">Take Quiz Again</a>
-    </div>
-    `;
-    const quizElement = document.getElementById("quiz");
-    quizElement.innerHTML = quizEndHTML;
-};
 
 // create questions here
 let questions = [
@@ -109,11 +109,8 @@ let questions = [
 ];
 
 // INITIALIZE quiz
-let quiz = new Quiz(questions);
-
-// display questions
-displayQuestion();
-
+const quiz = new Quiz(questions);
+quiz.start()
 
 // Add A CountDown for the Quiz
 let time = 10;
