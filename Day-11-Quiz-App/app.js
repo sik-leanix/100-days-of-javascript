@@ -6,12 +6,12 @@ class Quiz {
         this.questionIndex = 0;
     }
 
-    getQuestionIndex() {
+    getCurrentQuestion() {
         return this.questions[this.questionIndex];
     }
 
     guess(answer) {
-        if (this.getQuestionIndex().isCorrectAnswer(answer)) {
+        if (this.getCurrentQuestion().isCorrectAnswer(answer)) {
             this.score++;
         }
         this.questionIndex++;
@@ -19,8 +19,10 @@ class Quiz {
 
     isEnded() {
         return this.questionIndex === this.questions.length;
+        
     }
 }
+
 
 // Create a question Class
 class Question {
@@ -42,10 +44,10 @@ function displayQuestion() {
     } else {
         // show question
         let questionElement = document.getElementById("question");
-        questionElement.innerHTML = quiz.getQuestionIndex().text;
+        questionElement.innerHTML = quiz.getCurrentQuestion().text;
 
         // show options
-        let choices = quiz.getQuestionIndex().choices;
+        let choices = quiz.getCurrentQuestion().choices;
         for (let i = 0; i < choices.length; i++) {
             let choiceElement = document.getElementById("choice" + i);
             choiceElement.innerHTML = choices[i];
@@ -75,7 +77,7 @@ function showProgress() {
 
 // SHOW SCORES
 function showScores() {
-    let quizEndHTML =
+    const quizEndHTML =
         `
     <h1>Quiz Completed</h1>
     <h2 id='score'> Your scored: ${quiz.score} of ${quiz.questions.length}</h2>
@@ -83,7 +85,7 @@ function showScores() {
         <a href="index.html">Take Quiz Again</a>
     </div>
     `;
-    let quizElement = document.getElementById("quiz");
+    const quizElement = document.getElementById("quiz");
     quizElement.innerHTML = quizEndHTML;
 };
 
@@ -129,6 +131,11 @@ function startCountdown() {
             quizTime--;
             let sec = Math.floor(quizTime % 60);
             let min = Math.floor(quizTime / 60) % 60;
+            while (sec < 10) {
+                sec = "0" + sec
+                counting.innerHTML = `TIME: ${min} : ${sec}`;
+                return sec
+            }
             counting.innerHTML = `TIME: ${min} : ${sec}`;
         }
     }, 1000);
