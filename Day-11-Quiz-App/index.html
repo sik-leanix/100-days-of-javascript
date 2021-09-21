@@ -15,23 +15,42 @@
 <body>
     <div class="container">
         <div class="quiz-box">
-            <div id="quizChooser">
-                <button class="btn" id="startHtml">Start the HTML Quiz</button>
-                <button class="btn" id="startTennis">Start the Tennis Quiz</button>
+            <div id="quizChooser" style="padding-top: 20px;">
+                <button class="btn" id="startHtml" style="text-align: center">Start the HTML Quiz</button>
+                <button class="btn" id="startTennis" style="text-align: center">Start the Sports Quiz</button>
             </div>
             <div id="sik-quiz"></div>
+            <footer>
+                <div style="display: block; text-align: center; margin-top: 10px;">
+                    <a class="backLink" href="../Week2.html">Back</a>
+                </div>
+            </footer>
         </div>
-        <footer>
-            <div style="display: block; text-align: center; margin-top: 10px;">
-                <a class="backLink" href="../Week2.html">Back</a>
-            </div>
-        </footer>
+     
     </div>
 
     <script src="app.js"></script>
     <script>
         const htmlQuestions = [
             new Question(
+                "HTML is what type of language ?", ["Scripting Language", "Programming Language", "Markup Language", "Network Protocol"], "Markup Language"
+            ),
+            new Question(
+                "HTML uses", ["User defined tags", "Fixed tags defined by the language", "Pre-specified tags", "Tags only for linking"], "Fixed tags defined by the language"
+            ),
+            new Question(
+                "The year in which HTML was first proposed", ["1990", "1980", "1995", "2000"], "1990"
+            ),
+            new Question(
+                "Fundamental HTML Block is known as", ["HTML Body", "HTML Attribute", "HTML Tag", "HTML Element"], " HTML Tag"
+            ),
+            new Question(
+                "Apart from <b> tag, what other tag makes text bold ?", ["<fat>", "<black>", "<strong>", "<emp>"], "<strong>"
+            )
+        ];
+
+        const sportQuestions = [
+        new Question(
                 "How many times has Roger Federer won Wimbledon playing singles?", ["7", "10", "8", "5"], "8"
             ),
             new Question(
@@ -41,28 +60,10 @@
                 "Where does golf originate from?", ["Scotland", "France", "Spain", "Ireland"], "Scotland"
             ),
             new Question(
-                "Which is a backend language?", ["PHP", "HTML", "React", "All"], "PHP"
+                "Who is the current national coach of the german soccer team?", ["Joachim Löw", "Jürgen Klopp", "Hansi Flick", "Thomas Tuchel"], "Hansi Flick"
             ),
             new Question(
-                "Which is best for Artificial intelligence?", ["React", "Laravel", "Python", "Sass"], "Python"
-            )
-        ];
-
-        const tennisQuestions = [
-        new Question(
-                "How good of a player is Roger Federer?", ["7", "10", "8", "5"], "8"
-            ),
-            new Question(
-                "How long does a quarter go in the NBA?", ["8 Minutes", "10 Minutes", "12 Minutes", "15 Minutes"], "12 Minutes"
-            ),
-            new Question(
-                "Where does golf originate from?", ["Scotland", "France", "Spain", "Ireland"], "Scotland"
-            ),
-            new Question(
-                "Which is a backend language?", ["PHP", "HTML", "React", "All"], "PHP"
-            ),
-            new Question(
-                "Which is best for Artificial intelligence?", ["React", "Laravel", "Python", "Sass"], "Python"
+                "With how many points do you start a darts game?", ["301", "401", "501", "601"], "501"
             )
         ]
 
@@ -84,7 +85,7 @@
 
         const startTennisQuizButton = document.getElementById("startTennis");
         startTennisQuizButton.addEventListener("click", () => {
-            new Quiz(tennisQuestions, elementId).start()
+            new Quiz(sportQuestions, elementId).start()
         });
     </script>
 </body>
