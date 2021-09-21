@@ -10,15 +10,16 @@ class Quiz {
     }
 
     start() {
-        this.displayQuestion();
+        this._displayQuestion();
+        this._startCountdown();
     }
 
     guess(answer) {
-        if (this.getCurrentQuestion().isCorrectAnswer(answer)) {
+        if (this._getCurrentQuestion().isCorrectAnswer(answer)) {
             this.score++;
         }
         this.questionIndex++;
-        if (quiz.isEnded()) {
+        if (this._isEnded()) {
             this._showScores();
         }
 
@@ -33,19 +34,22 @@ class Quiz {
     }
 
     _updateProgress() {
-        const currentQuestionNumber = quiz.questionIndex + 1;
+        const currentQuestionNumber = this.questionIndex + 1;
         const ProgressElement = document.getElementById("progress");
         ProgressElement.innerHTML =
-            `Question ${currentQuestionNumber} of ${quiz.questions.length}`;
+            `Question ${currentQuestionNumber} of ${this.questions.length}`;
     }
 
     _displayQuestion() {
+        if (this._isEnded()) {
+            return;
+        }
         // show question
         const questionElement = document.getElementById("question");
-        questionElement.innerHTML = quiz.getCurrentQuestion().text;
+        questionElement.innerHTML = this._getCurrentQuestion().text;
 
         // show options
-        const choices = quiz.getCurrentQuestion().choices;
+        const choices = this._getCurrentQuestion().choices;
         for (let i = 0; i < choices.length; i++) {
             let choiceElement = document.getElementById("choice" + i);
             choiceElement.innerHTML = choices[i];
@@ -56,16 +60,17 @@ class Quiz {
 
     _registerSelectGuessListener(buttonId, guess) {
         const button = document.getElementById(buttonId);
-        button.onclick = function() {
-            quiz.guess(guess);
-            displayQuestion();
+        button.onclick = () => {
+            this.guess(guess);
+            // Calling displayQuestion after guess() will show the next question.
+            this._displayQuestion();
         }
     }
 
     _showScores() {
         const quizEndHTML = `
           <h1>Quiz Completed</h1>
-          <h2 id='score'>You scored: ${quiz.score} of ${quiz.questions.length}</h2>
+          <h2 id='score'>You scored: ${this.score} of ${this.questions.length}</h2>
           <div class="quiz-repeat">
             <a href="index.html">Take Quiz Again</a>
           </div>
@@ -73,10 +78,32 @@ class Quiz {
         const quizElement = document.getElementById("quiz");
         quizElement.innerHTML = quizEndHTML;
     }
+
+    _startCountdown() {
+        const time = 10;
+        const quizTimeInMinutes = time * 60 * 60;
+        let quizTime = quizTimeInMinutes / 60;
+
+        const countdownElement = document.getElementById("count-down");
+        const quizTimer = setInterval(() => {
+            if (quizTime <= 0) {
+                clearInterval(quizTimer);
+                this._showScores();
+            } else {
+                quizTime--;
+                let sec = Math.floor(quizTime % 60);
+                let min = Math.floor(quizTime / 60) % 60;
+                while (sec < 10) {
+                    sec = "0" + sec
+                    countdownElement.innerHTML = `TIME: ${min} : ${sec}`;
+                    return sec
+                }
+                countdownElement.innerHTML = `TIME: ${min} : ${sec}`;
+            }
+        }, 1000);
+    }
 }
 
-
-// Create a question Class
 class Question {
     constructor(text, choices, answer) {
         this.text = text;
@@ -111,31 +138,3 @@ let questions = [
 // INITIALIZE quiz
 const quiz = new Quiz(questions);
 quiz.start()
-
-// Add A CountDown for the Quiz
-let time = 10;
-let quizTimeInMinutes = time * 60 * 60;
-let quizTime = quizTimeInMinutes / 60;
-
-let counting = document.getElementById("count-down");
-
-function startCountdown() {
-    let quizTimer = setInterval(function() {
-        if (quizTime <= 0) {
-            clearInterval(quizTimer);
-            showScores();
-        } else {
-            quizTime--;
-            let sec = Math.floor(quizTime % 60);
-            let min = Math.floor(quizTime / 60) % 60;
-            while (sec < 10) {
-                sec = "0" + sec
-                counting.innerHTML = `TIME: ${min} : ${sec}`;
-                return sec
-            }
-            counting.innerHTML = `TIME: ${min} : ${sec}`;
-        }
-    }, 1000);
-}
-
-startCountdown();
