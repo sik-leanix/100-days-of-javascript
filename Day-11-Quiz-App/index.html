@@ -15,11 +15,78 @@
 <body>
     <div class="container">
         <div class="quiz-box">
-            <div id="sik-quiz"><button id="startButton">Start the Quiz</button></div>
+            <div id="quizChooser">
+                <button id="startHtml">Start the HTML Quiz</button>
+                <button id="startTennis">Start the Tennis Quiz</button>
+            </div>
+            <div id="sik-quiz"></div>
         </div>
+        <footer>
+            <div style="display: block; text-align: center; margin-top: 10px;">
+                <a class="backLink" href="../Week2.html">Back</a>
+            </div>
+        </footer>
     </div>
 
     <script src="app.js"></script>
+    <script>
+        const htmlQuestions = [
+            new Question(
+                "How many times has Roger Federer won Wimbledon playing singles?", ["7", "10", "8", "5"], "8"
+            ),
+            new Question(
+                "How long does a quarter go in the NBA?", ["8 Minutes", "10 Minutes", "12 Minutes", "15 Minutes"], "12 Minutes"
+            ),
+            new Question(
+                "Where does golf originate from?", ["Scotland", "France", "Spain", "Ireland"], "Scotland"
+            ),
+            new Question(
+                "Which is a backend language?", ["PHP", "HTML", "React", "All"], "PHP"
+            ),
+            new Question(
+                "Which is best for Artificial intelligence?", ["React", "Laravel", "Python", "Sass"], "Python"
+            )
+        ];
+
+        const tennisQuestions = [
+        new Question(
+                "How good of a player is Roger Federer?", ["7", "10", "8", "5"], "8"
+            ),
+            new Question(
+                "How long does a quarter go in the NBA?", ["8 Minutes", "10 Minutes", "12 Minutes", "15 Minutes"], "12 Minutes"
+            ),
+            new Question(
+                "Where does golf originate from?", ["Scotland", "France", "Spain", "Ireland"], "Scotland"
+            ),
+            new Question(
+                "Which is a backend language?", ["PHP", "HTML", "React", "All"], "PHP"
+            ),
+            new Question(
+                "Which is best for Artificial intelligence?", ["React", "Laravel", "Python", "Sass"], "Python"
+            )
+        ]
+
+        const elementId = 'sik-quiz';
+        const quizElement = document.getElementById(elementId);
+        quizElement.addEventListener("SidneyQuiz:start", () => {
+            quizChooser.style.display = "none";
+        });
+        quizElement.addEventListener("SidneyQuiz:quit", () => {
+            quizChooser.style.display = "block";
+        });
+
+        const quizChooser = document.getElementById("quizChooser");
+
+        const startHtmlQuizButton = document.getElementById("startHtml");
+        startHtmlQuizButton.addEventListener("click", () => {
+            new Quiz(htmlQuestions, elementId).start();
+        });
+
+        const startTennisQuizButton = document.getElementById("startTennis");
+        startTennisQuizButton.addEventListener("click", () => {
+            new Quiz(tennisQuestions, elementId).start()
+        });
+    </script>
 </body>
 
 </html>

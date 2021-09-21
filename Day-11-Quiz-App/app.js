@@ -2,11 +2,11 @@
  * Methods prefixed with "_" are considered private and should not be used on the outside.
  * The only methods an outside consumer would need are Quiz.start and Quiz.guess.
  * 
- * How to use: include this Quiz class on your website and add a <div
+ * How to use: include this Quiz class on your website and add a <div>
  */
 class Quiz {
     quizHtmlBody = `
-        <h1>JavaScript Quiz App</h1>
+        <h1>Sports Quiz App</h1>
         <div class="quiz-header">
             <p id="progress">Question x of y</p>
             <p id="count-down">TIME: 10 : 00</p>
@@ -19,14 +19,9 @@ class Quiz {
             <button class="btn" id="btn2">C. <span id="choice2"></span></button>
             <button class="btn" id="btn3">D. <span id="choice3"></span></button>
         </div>
-
+        <button class="btn" id="quitQuizButton">Quit</button>
         <hr>
         <p>You will see your score at the end of the Quiz.</p>
-        <footer>
-            <div style="display: block; text-align: center; margin-top: 10px;">
-                <a class="backLink" href="../Week2.html">Back</a>
-            </div>
-        </footer>
     `
 
     constructor(questions, entryElementId = 'sik-quiz') {
@@ -40,6 +35,18 @@ class Quiz {
         this.containerElement.innerHTML = this.quizHtmlBody;
         this._displayQuestion();
         this._startCountdown();
+        const button = document.getElementById('quitQuizButton');
+        button.onclick = () => this.quit();
+        const startEvent = new Event("SidneyQuiz:start");
+        this.containerElement.dispatchEvent(startEvent);
+    }
+
+    quit() {
+        this.containerElement.textContent = '';
+        this.score = 0;
+        this.questionIndex = 0;
+        const quitEvent = new Event("SidneyQuiz:quit");
+        this.containerElement.dispatchEvent(quitEvent);
     }
 
     guess(answer) {
@@ -142,26 +149,3 @@ class Question {
         return this.answer === choice;
     }
 }
-
-// create questions here
-let questions = [
-    new Question(
-        "Hyper Text Markup Language Stands For?", ["JQuery", "XHTML", "CSS", "HTML"], "HTML"
-    ),
-    new Question(
-        "Cascading Style sheet stands for?", ["HTML", "JQuery", "CSS", "XML"], "CSS"
-    ),
-    new Question(
-        "Which is a JavaScript Framework?", ["React", "Laravel", "Django", "Sass"], "React"
-    ),
-    new Question(
-        "Which is a backend language?", ["PHP", "HTML", "React", "All"], "PHP"
-    ),
-    new Question(
-        "Which is best for Artificial intelligence?", ["React", "Laravel", "Python", "Sass"], "Python"
-    )
-];
-
-// INITIALIZE quiz
-const quiz = new Quiz(questions);
-quiz.start()
