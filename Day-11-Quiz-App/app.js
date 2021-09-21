@@ -1,15 +1,43 @@
 /**
  * Methods prefixed with "_" are considered private and should not be used on the outside.
  * The only methods an outside consumer would need are Quiz.start and Quiz.guess.
+ * 
+ * How to use: include this Quiz class on your website and add a <div
  */
 class Quiz {
-    constructor(questions) {
+    quizHtmlBody = `
+        <h1>JavaScript Quiz App</h1>
+        <div class="quiz-header">
+            <p id="progress">Question x of y</p>
+            <p id="count-down">TIME: 10 : 00</p>
+        </div>
+        <p id="question"></p>
+
+        <div class="buttons">
+            <button class="btn" id="btn0">A. <span id="choice0"></span></button>
+            <button class="btn" id="btn1">B. <span id="choice1"></span></button>
+            <button class="btn" id="btn2">C. <span id="choice2"></span></button>
+            <button class="btn" id="btn3">D. <span id="choice3"></span></button>
+        </div>
+
+        <hr>
+        <p>You will see your score at the end of the Quiz.</p>
+        <footer>
+            <div style="display: block; text-align: center; margin-top: 10px;">
+                <a class="backLink" href="../Week2.html">Back</a>
+            </div>
+        </footer>
+    `
+
+    constructor(questions, entryElementId = 'sik-quiz') {
         this.score = 0;
         this.questions = questions;
         this.questionIndex = 0;
+        this.containerElement = document.getElementById(entryElementId);
     }
 
     start() {
+        this.containerElement.innerHTML = this.quizHtmlBody;
         this._displayQuestion();
         this._startCountdown();
     }
@@ -75,8 +103,7 @@ class Quiz {
             <a href="index.html">Take Quiz Again</a>
           </div>
         `;
-        const quizElement = document.getElementById("quiz");
-        quizElement.innerHTML = quizEndHTML;
+        this.containerElement.innerHTML = quizEndHTML;
     }
 
     _startCountdown() {
