@@ -41,9 +41,6 @@ class Quiz {
             this.score++;
         }
         this.questionIndex++;
-        if (this._isEnded()) {
-            this._showScores();
-        }
         return isCorrectGuess;
     }
 
@@ -92,7 +89,7 @@ class Quiz {
 
     _displayQuestion() {
         if (this._isEnded()) {
-            return;
+            return this._showScores();
         }
         // show question
         const questionElement = document.getElementById("question");
