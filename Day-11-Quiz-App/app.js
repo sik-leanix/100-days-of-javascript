@@ -5,34 +5,18 @@
  * How to use: include this Quiz class on your website and add a <div>
  */
 class Quiz {
-    quizHtmlBody = `
-        <h1>Sports Quiz App</h1>
-        <div class="quiz-header">
-            <p id="progress">Question x of y</p>
-            <p id="count-down">TIME: 10 : 00</p>
-        </div>
-        <p id="question"></p>
 
-        <div class="buttons">
-            <button class="btn" id="btn0">A. <span id="choice0"></span></button>
-            <button class="btn" id="btn1">B. <span id="choice1"></span></button>
-            <button class="btn" id="btn2">C. <span id="choice2"></span></button>
-            <button class="btn" id="btn3">D. <span id="choice3"></span></button>
-        </div>
-        <button class="btn" id="quitQuizButton" style="text-align: center">Quit</button>
-        <hr>
-        <p>You will see your score at the end of the Quiz.</p>
-    `
-
-    constructor(questions, entryElementId = 'sik-quiz') {
+    constructor(questions, entryElementId = 'sik-quiz', quizTitle = 'Quiz App') {
         this.score = 0;
         this.questions = questions;
         this.questionIndex = 0;
+        this.quizTitle = quizTitle;
         this.containerElement = document.getElementById(entryElementId);
+    
     }
 
     start() {
-        this.containerElement.innerHTML = this.quizHtmlBody;
+        this.containerElement.innerHTML = this._guizHtmlBody();
         this._displayQuestion();
         this._startCountdown();
         const button = document.getElementById('quitQuizButton');
@@ -65,6 +49,26 @@ class Quiz {
         this.start();
     }
 
+    _guizHtmlBody() {
+        return `
+        <h1>${this.quizTitle}</h1>
+        <div class="quiz-header">
+            <p id="progress">Question x of y</p>
+            <p id="count-down">TIME: 10 : 00</p>
+        </div>
+        <p id="question"></p>
+
+        <div class="buttons">
+            <button class="btn" id="btn0">A. <span id="choice0"></span></button>
+            <button class="btn" id="btn1">B. <span id="choice1"></span></button>
+            <button class="btn" id="btn2">C. <span id="choice2"></span></button>
+            <button class="btn" id="btn3">D. <span id="choice3"></span></button>
+        </div>
+        <button class="btn" id="quitQuizButton" style="text-align: center; background-color:#3399ff;" >Quit</button>
+        <hr>
+        <p>You will see your score at the end of the Quiz.</p>
+    `
+    } 
 
     _isEnded() {
         return this.questionIndex === this.questions.length;

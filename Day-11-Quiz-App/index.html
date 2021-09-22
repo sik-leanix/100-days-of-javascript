@@ -80,12 +80,12 @@
 
         const startHtmlQuizButton = document.getElementById("startHtml");
         startHtmlQuizButton.addEventListener("click", () => {
-            new Quiz(htmlQuestions, elementId).start();
+            new Quiz(htmlQuestions, elementId, "HTML Quiz").start();
         });
 
         const startTennisQuizButton = document.getElementById("startTennis");
         startTennisQuizButton.addEventListener("click", () => {
-            new Quiz(sportQuestions, elementId).start()
+            new Quiz(sportQuestions, elementId, "Sports Quiz").start()
         });
     </script>
 </body>
