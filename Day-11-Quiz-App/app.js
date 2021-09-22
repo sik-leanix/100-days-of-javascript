@@ -117,11 +117,15 @@ class Quiz {
           <h1>Quiz Completed</h1>
           <h2 id='score'>You scored: ${this.score} of ${this.questions.length}</h2>
           <div class="quiz-repeat">
-            <button class="btn" id="restartQuizButton" style="text-align: center">Take Quiz Again</button>
+            <button class="btn" id="restartQuizButton" style="text-align: center; background-color:#3399ff;">Take Quiz Again</button>
+            <button class="btn" id="quitQuizButtonEnd" style="text-align: center; background-color:#3399ff;" >Quit</button>
+            <hr>
           </div>
         `;
         this.containerElement.innerHTML = quizEndHTML;
         const restartButton = document.getElementById("restartQuizButton");
+        const quitButton = document.getElementById("quitQuizButtonEnd");
+        quitButton.addEventListener("click", () => this.quit());
         restartButton.addEventListener("click", () => this._reset());
     }
 
