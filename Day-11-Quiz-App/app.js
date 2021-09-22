@@ -60,7 +60,7 @@ class Quiz {
         </div>
         <p id="question"></p>
 
-        <div class="buttons">
+        <div class="buttons id="">
             <button class="btn" id="btn0">A. <span id="choice0"></span></button>
             <button class="btn" id="btn1">B. <span id="choice1"></span></button>
             <button class="btn" id="btn2">C. <span id="choice2"></span></button>
@@ -96,8 +96,12 @@ class Quiz {
         questionElement.textContent = this._getCurrentQuestion().text;
 
         // show options
+        const createButtonforChoices = document.createElement("button")
         const choices = this._getCurrentQuestion().choices;
         for (let i = 0; i < choices.length; i++) {
+            createButtonforChoices.appendChild
+            createButtonforChoices.id = "choics" + i;
+
             let choiceElement = document.getElementById("choice" + i);
             choiceElement.textContent = choices[i];
             this._registerSelectGuessListener("btn" + i, choices[i])
