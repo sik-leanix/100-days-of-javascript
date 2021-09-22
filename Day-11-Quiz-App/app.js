@@ -34,6 +34,7 @@ class Quiz {
     }
 
     guess(answer) {
+        const isCorrectGuess = this._getCurrentQuestion().isCorrectAnswer(answer);
         if (this._getCurrentQuestion().isCorrectAnswer(answer)) {
             this.score++;
         }
@@ -41,6 +42,7 @@ class Quiz {
         if (this._isEnded()) {
             this._showScores();
         }
+        return isCorrectGuess;
     }
 
     _reset() {
@@ -105,10 +107,11 @@ class Quiz {
 
     _registerSelectGuessListener(buttonId, guess) {
         const button = document.getElementById(buttonId);
-        button.onclick = () => {
-            this.guess(guess);
-            // Calling displayQuestion after guess() will show the next question.
-            this._displayQuestion();
+        button.style.backgroundColor = "#ddd"; // reset button background as it might have been changed on the previous guess
+        button.onclick = (clickEvent) => {
+            const isCorrect = this.guess(guess);
+            clickEvent.target.style.backgroundColor = isCorrect ? "green" : "red";
+            setTimeout(() => this._displayQuestion(), 1500);
         }
     }
 
