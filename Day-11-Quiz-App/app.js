@@ -91,13 +91,13 @@ class Quiz {
         }
         // show question
         const questionElement = document.getElementById("question");
-        questionElement.innerHTML = this._getCurrentQuestion().text;
+        questionElement.textContent = this._getCurrentQuestion().text;
 
         // show options
         const choices = this._getCurrentQuestion().choices;
         for (let i = 0; i < choices.length; i++) {
             let choiceElement = document.getElementById("choice" + i);
-            choiceElement.innerHTML = choices[i];
+            choiceElement.textContent = choices[i];
             this._registerSelectGuessListener("btn" + i, choices[i])
         }
         this._updateProgress();
