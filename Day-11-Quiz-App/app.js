@@ -6,6 +6,8 @@
  */
 class Quiz {
 
+    userHasAlreadyGuessedForCurrentQuestion = false;
+
     constructor(questions, entryElementId = 'sik-quiz', quizTitle = 'Quiz App') {
         this.score = 0;
         this.questions = questions;
@@ -48,6 +50,7 @@ class Quiz {
     _reset() {
         this.score = 0;
         this.questionIndex = 0;
+        this.userHasAlreadyGuessedForCurrentQuestion = false;
         this.start();
     }
 
@@ -108,10 +111,17 @@ class Quiz {
     _registerSelectGuessListener(buttonId, guess) {
         const button = document.getElementById(buttonId);
         button.style.backgroundColor = "#ddd"; // reset button background as it might have been changed on the previous guess
-        button.onclick = (clickEvent) => {
+        button.onclick = () => {
+            if (this.userHasAlreadyGuessedForCurrentQuestion) {
+                return;
+            }
+            this.userHasAlreadyGuessedForCurrentQuestion = true;
             const isCorrect = this.guess(guess);
-            clickEvent.target.style.backgroundColor = isCorrect ? "green" : "red";
-            setTimeout(() => this._displayQuestion(), 1500);
+            button.style.backgroundColor = isCorrect ? "green" : "red";
+            setTimeout(() => {
+                this._displayQuestion();
+                this.userHasAlreadyGuessedForCurrentQuestion = false;
+            }, 1500);
         }
     }
 
