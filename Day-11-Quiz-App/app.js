@@ -60,12 +60,7 @@ class Quiz {
         </div>
         <p id="question"></p>
 
-        <div class="buttons id="">
-            <button class="btn" id="btn0">A. <span id="choice0"></span></button>
-            <button class="btn" id="btn1">B. <span id="choice1"></span></button>
-            <button class="btn" id="btn2">C. <span id="choice2"></span></button>
-            <button class="btn" id="btn3">D. <span id="choice3"></span></button>
-        </div>
+        <div id="choiceContainer"></div>
         <button class="btn" id="quitQuizButton" style="text-align: center; background-color:#3399ff;" >Quit</button>
         <hr>
         <p>You will see your score at the end of the Quiz.</p>
@@ -96,29 +91,29 @@ class Quiz {
         questionElement.textContent = this._getCurrentQuestion().text;
 
         // show options
-        const createButtonforChoices = document.createElement("button")
         const choices = this._getCurrentQuestion().choices;
+        const choiceContainer = document.getElementById("choiceContainer");
+        choiceContainer.textContent = "";
         for (let i = 0; i < choices.length; i++) {
-            createButtonforChoices.appendChild
-            createButtonforChoices.id = "choics" + i;
-
-            let choiceElement = document.getElementById("choice" + i);
-            choiceElement.textContent = choices[i];
-            this._registerSelectGuessListener("btn" + i, choices[i])
+            const buttonElement = document.createElement("button");
+            buttonElement.className = "btn";
+            const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
+            buttonElement.textContent = `${alphabet[i]}. ${choices[i]}`
+            this._registerSelectGuessListener(buttonElement, choices[i]);
+            choiceContainer.appendChild(buttonElement);    
         }
         this._updateProgress();
     }
 
-    _registerSelectGuessListener(buttonId, guess) {
-        const button = document.getElementById(buttonId);
-        button.style.backgroundColor = "#ddd"; // reset button background as it might have been changed on the previous guess
-        button.onclick = () => {
+    _registerSelectGuessListener(buttonElement, guess) {
+        buttonElement.style.backgroundColor = "#ddd"; // reset button background as it might have been changed on the previous guess
+        buttonElement.onclick = () => {
             if (this.userHasAlreadyGuessedForCurrentQuestion) {
                 return;
             }
             this.userHasAlreadyGuessedForCurrentQuestion = true;
             const isCorrect = this.guess(guess);
-            button.style.backgroundColor = isCorrect ? "green" : "red";
+            buttonElement.style.backgroundColor = isCorrect ? "green" : "red";
             setTimeout(() => {
                 this._displayQuestion();
                 this.userHasAlreadyGuessedForCurrentQuestion = false;
