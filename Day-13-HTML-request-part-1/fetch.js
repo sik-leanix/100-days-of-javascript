@@ -6,7 +6,7 @@ btn.addEventListener("click", getUsers);
 function getUsers(e) {
     e.preventDefault();
 
-    fetch("users.json")
+    fetch("https://sik-leanix.github.io/100-days-of-javascript/Day-13-HTML-request-part-1/users.json")
         .then(function(response) {
             return response.json();
         })
