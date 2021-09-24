@@ -23,6 +23,7 @@ html {
 }
 
 body {
+    background: #3399ff;
     font-family: 'Open Sans', sans-serif;
     padding-top: 5rem;
 }
@@ -55,8 +56,17 @@ img {
 .user > * {
     margin: 5px 0;
 }
+
 button {
-    padding: 1rem;
+    width: 150px;
+    padding: 1rem 5px;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    color: white;
+    background: rgb(1, 22, 209);
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 hr {
@@ -73,3 +83,15 @@ ul li {
     padding: 5px 0;
 }
 
+.getUserBox {
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 40rem;
+    background: white;
+    padding: 4rem 2rem;
+    border-radius: 5px;
+    padding-bottom: 20px
+  }
