@@ -17,10 +17,10 @@ function getUsers(e) {
                 output += `
                     <hr>
                     <ul>
-                        <li>ID: ${user.id}</li>
-                        <li>Name: ${user.name}</li>
-                        <li>Age: ${user.age}</li>
-                        <li>Email: ${user.email}</li>
+                        <p>ID: ${user.id}</p>
+                        <p>Name: ${user.name}</p>
+                        <p>Age: ${user.age}</p>
+                        <p>Email: ${user.email}</p>
                     </ul>
                 `;
 
