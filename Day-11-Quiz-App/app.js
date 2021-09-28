@@ -14,7 +14,7 @@ class Quiz {
 
     constructor(questions, entryElementId = 'sik-quiz', quizTitle = 'Quiz App') {
         if (typeof questions === 'string') {
-            this.questions = QuizApp.getQuestionsFromJson(questions)
+            this.questions = Quiz.getQuestionsFromJson(questions)
         } else {
             this.questions = questions
         }
