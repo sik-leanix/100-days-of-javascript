@@ -1,3 +1,8 @@
+function InvalidQuizInputException(message) {
+    this.message = message;
+    this.name = "InvalidQuizInputException";
+}
+
 /**
  * Methods prefixed with "_" are considered private and should not be used on the outside.
  * The only methods an outside consumer would need are Quiz.start and Quiz.guess.
@@ -6,8 +11,12 @@
  */
 class Quiz {
     static getQuestionsFromJson(jsonString) {
-        const convertJSONtoObject = JSON.parse(jsonString).map(question => new Question(question.text, question.choices, question.answer));
-        console.log(convertJSONtoObject)
+        const convertJSONtoObject = JSON.parse(jsonString).map(question =>{
+            if (question.text && question.answer && typeof question.choices === "object" && question.choices.length > 0) {
+                return new Question(question.text, question.choices, question.answer)
+            }
+            throw new InvalidQuizInputException("You need to provide questions to start a Quiz");
+        } );
         return convertJSONtoObject
     }
 
