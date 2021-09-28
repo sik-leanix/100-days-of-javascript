@@ -5,13 +5,13 @@ This is my QuizApp Framework repository. It contains a framework for building a 
 ## How to use it
 You can easily use the QuizApp by adding this to your HTML file.
 
-``HTML 
+```HTML 
 <script src="https://raw.githubusercontent.com/sik-leanix/100-days-of-javascript/main/Day-11-Quiz-App/app.js"></script>
-``
+```
 
 Here is an example how your HTML should look like:
 
-``HTML
+```HTML
 <head>
   <link rel="stylesheet" href="https://raw.githubusercontent.com/sik-leanix/100-days-of-javascript/main/Day-11-Quiz-App/quiz-app.css">
 </head>
@@ -36,7 +36,7 @@ Here is an example how your HTML should look like:
         });
     </script>
 </body>
-``
+```
 
 You should use a JSON string, to create the questions. It is easier then creating JavaScript Objects!
 
