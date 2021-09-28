@@ -5,10 +5,19 @@
  * How to use: include this Quiz class on your website and add a <div>
  */
 class Quiz {
+    static getQuestionsFromJson(jsonString) {
+        const convertJSONtoArray = JSON.parse(jsonString).map(x => x);
+        return convertJSONtoArray
+    }
 
     userHasAlreadyGuessedForCurrentQuestion = false;
 
     constructor(questions, entryElementId = 'sik-quiz', quizTitle = 'Quiz App') {
+        if (typeof questions === 'string') {
+            this.questions = QuizApp.getQuestionsFromJson(questions)
+        } else {
+            this.questions = questions
+        }
         this.score = 0;
         this.questions = questions;
         this.questionIndex = 0;
