@@ -41,3 +41,6 @@ Here is an example how your HTML should look like:
 You should use a JSON string, to create the questions. It is easier then creating JavaScript Objects!
 
 Don't forget to implement the CSS file. You can download it on the GitHub repository. 
+
+## Add questions
+
