@@ -1,0 +1,25 @@
+<head>
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/sik-leanix/100-days-of-javascript/main/Day-11-Quiz-App/quiz-app.css">
+</head>
+  <body>
+      <div id="quiz"></div>
+      <button id="startQuiz">Start the Quiz</button>
+      <script src="https://raw.githubusercontent.com/sik-leanix/100-days-of-javascript/main/Day-11-Quiz-App/app.js"></script>
+      <script>
+          const questions = `[{ text: 'What is 2 + 2 ? ', choices: ['1', '6', '4', '3'], answer: '4'}]`;
+          const quizName = 'Demo';
+          const quizElementId = 'quiz';
+          const startQuizButton = document.getElementById("startQuiz");
+          startQuizButton.addEventListener("click", () => {
+              new Quiz(questions, quizElementId, quizName).start()
+          });
+          const quizElement = document.getElementById('quiz');
+          quizElement.addEventListener("SidneyQuiz:start", () => {
+              startQuizButton.style.display = "none";
+          });
+          quizElement.addEventListener("SidneyQuiz:quit", () => {
+              startQuizButton.style.display = "block";
+          });
+      </script>
+  </body>
+  
