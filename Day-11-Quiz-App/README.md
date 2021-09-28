@@ -2,7 +2,7 @@
 This is my QuizApp Framework repository. It contains a framework for building a quiz, which you can use to query what has been learned or just for a funny friday evening with your friends. You can see a demo on [this Website](https://sik-leanix.github.io/100-days-of-javascript/Day-11-Quiz-App/index.html).
 
 
-## How to use it
+## Install Quiz App
 You can easily use the QuizApp by adding this to your HTML file.
 
 ```HTML 
@@ -52,6 +52,6 @@ Here is an example how your HTML should look like:
 </html>
 ```
 
-## Add questions
+## How to use it
 
-In the example you can see there are two questions with four different choices. The correct answer is described next to the choices. If you want to change or add questions just stick to the pattern. You can add a custom amount of choices.
+In the example you can see there are two questions with four different choices. The correct answer is described next to the choices. If you want to change or add questions just stick to the pattern. You can add a custom amount of choices. You change the name of the quiz in the section ``quizName``. 
