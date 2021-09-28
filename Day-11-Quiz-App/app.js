@@ -6,8 +6,9 @@
  */
 class Quiz {
     static getQuestionsFromJson(jsonString) {
-        const convertJSONtoArray = JSON.parse(jsonString).map(x => x);
-        return convertJSONtoArray
+        const convertJSONtoArray = JSON.parse(jsonString)
+        console.log(convertJSONtoArray);
+        return convertJSONtoArray.map(question => new Question(question.text, question.choices, question.answer));
     }
 
     userHasAlreadyGuessedForCurrentQuestion = false;
