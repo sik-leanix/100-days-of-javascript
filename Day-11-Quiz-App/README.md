@@ -54,4 +54,4 @@ Here is an example how your HTML should look like:
 
 ## Add questions
 
-In the example you can see there are two questions with four different choices. The correct answer is described next to the choices. If you want to change the questions just stick to the pattern. You can add a custom amount of choices. 
+In the example you can see there are two questions with four different choices. The correct answer is described next to the choices. If you want to change or add questions just stick to the pattern. You can add a custom amount of choices.
