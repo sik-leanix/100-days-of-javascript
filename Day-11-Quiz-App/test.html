@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>M</title>
+    <title>Quiz</title>
     <link rel="stylesheet" href="https://sik-leanix.github.io/100-days-of-javascript/Day-11-Quiz-App/styles.css">
 </head>
   <body>
@@ -9,7 +9,7 @@
       <button id="startQuiz">Start the Quiz</button>
       <script src="https://sik-leanix.github.io/100-days-of-javascript/Day-11-Quiz-App/app.js"></script>
       <script>
-          const questions = `[{ text: 'What is 2 + 2 ? ', choices: ['1', '6', '4', '3'], answer: '4'}]`;
+          const questions = {"text":"What is 2 + 2 ?", "choices":["1", "2", "3", "4"], "answer":"4"};
           const quizName = 'Demo';
           const quizElementId = 'quiz';
           const startQuizButton = document.getElementById("startQuiz");

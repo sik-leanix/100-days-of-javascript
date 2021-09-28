@@ -6,9 +6,9 @@
  */
 class Quiz {
     static getQuestionsFromJson(jsonString) {
-        const convertJSONtoArray = JSON.parse(jsonString)
-        console.log(convertJSONtoArray);
-        return convertJSONtoArray.map(question => new Question(question.text, question.choices, question.answer));
+        const convertJSONtoObject = JSON.parse(jsonString).map(question => new Question(question.text, question.choices, question.answer));
+        console.log(convertJSONtoObject)
+        return convertJSONtoObject
     }
 
     userHasAlreadyGuessedForCurrentQuestion = false;
@@ -20,7 +20,6 @@ class Quiz {
             this.questions = questions
         }
         this.score = 0;
-        this.questions = questions;
         this.questionIndex = 0;
         this.quizTitle = quizTitle;
         this.containerElement = document.getElementById(entryElementId);
@@ -28,7 +27,7 @@ class Quiz {
     }
 
     start() {
-        this.containerElement.innerHTML = this._guizHtmlBody();
+        this.containerElement.innerHTML = this._quizHtmlBody();
         this._displayQuestion();
         this._startCountdown();
         const button = document.getElementById('quitQuizButton');
@@ -61,7 +60,7 @@ class Quiz {
         this.start();
     }
 
-    _guizHtmlBody() {
+    _quizHtmlBody() {
         return `
         <h1>${this.quizTitle}</h1>
         <div class="quiz-header">
