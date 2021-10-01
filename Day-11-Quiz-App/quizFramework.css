@@ -2,36 +2,8 @@
 
 
 
-html {
-    font-size: 10px;
-}
-
-body {
-    font-family: 'Open Sans', sans-serif;
-}
-
-p {
-    font-size: 1.6rem;
-    line-height: 1.5;
-}
-
-img {
-    width: 100%;
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
 .quiz-box {
     width: 600px;
-    /* height: 500px; */
     margin: 0 auto;
     background-color: #eee;
     padding: 10px 50px 20px 50px;
@@ -80,10 +52,6 @@ img {
     border: 1px solid #777;
     border-width: 1px 0;
     padding: 5px 0;
-}
-
-.buttons {
-    margin: 1.5rem 0 4rem 0;
 }
 
 .btn {

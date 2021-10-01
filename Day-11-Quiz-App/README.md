@@ -14,7 +14,7 @@ You can easily use the QuizApp by adding this to your HTML file:
 Don't forget to include the CSS File in your Header:
 
 ```HTML
-    <link rel="stylesheet" href="https://sik-leanix.github.io/100-days-of-javascript/Day-11-Quiz-App/quizFramework.css">
+ <link rel="stylesheet" href="https://sik-leanix.github.io/100-days-of-javascript/Day-11-Quiz-App/quizFramework.css">
 ```
 
 ## How to use it
