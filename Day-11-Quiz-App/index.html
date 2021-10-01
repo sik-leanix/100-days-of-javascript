@@ -39,6 +39,7 @@
         </div>
     </div>
 
+    <script src="quizBuilder.js"></script>
     <script src="app.js"></script>
     <script>
         const htmlQuestions = [
@@ -105,6 +106,9 @@
         const quizBuilderButton = document.getElementById("createQuizButton")
         quizBuilderButton.addEventListener("click", () => {
             new QuizBuilder().start()
+            quizChooser.style.display = "none";
+            quizBuilderButton.style.display = "none";
+            customQuizContainer.style.display = "none";
         })
 
 
