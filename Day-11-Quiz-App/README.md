@@ -15,7 +15,10 @@ Don't forget to include the CSS File in your Header:
     <link rel="stylesheet" href="https://sik-leanix.github.io/100-days-of-javascript/Day-11-Quiz-App/quizFramework.css">
 ```
 
-Here is an example how your HTML should look like:
+## How to use it
+
+In the example you can see there are two questions with four different choices. The correct answer is described next to the choices. If you want to change or add questions just stick to the pattern. You can add a custom amount of choices. You change the name of the quiz in the section ``quizName``. 
+
 
 ```HTML
 <!DOCTYPE html>
@@ -58,6 +61,106 @@ Here is an example how your HTML should look like:
 </html>
 ```
 
-## How to use it
+## API
 
-In the example you can see there are two questions with four different choices. The correct answer is described next to the choices. If you want to change or add questions just stick to the pattern. You can add a custom amount of choices. You change the name of the quiz in the section ``quizName``. 
+* `Quiz`
+  * [`new Quiz(questions ,quizElementId, quizName)`](#new)
+  * [`.guess(answer)`](#guess-answer)
+  * [`.start()`](#start)
+  * [`.quit()`](#quit)
+  * [`.getQuestionsFromJson(jsonString)`](#check-JSON)
+
+
+* `Question`
+  * [`.new Question(text, choices, answer)`](#new-Question)
+  * [`.isCorrectAnswer(choice)`](#correctAnswer)
+
+
+* * *
+
+<a name="new"></a>
+#### `new Quiz(questions, quizElementId, quizName)`
+
+Initialize new quiz. The questions can be provided in two ways:
+
+```Javascript
+const questions = [
+        new Question(
+                "How many times has Roger Federer won Wimbledon playing singles?", ["7", "10", "8", "5"], "8"
+            ),
+        new Question(
+            "How long does a quarter go in the NBA?", ["8 Minutes", "10 Minutes", "12 Minutes", "15 Minutes"], "12 Minutes"
+        ),
+``` 
+
+Or: (more recommended)
+
+```Javascript 
+const questions = `[
+              {"text":"What is 1 + 1 ?", "choices":["1", "2", "50", "40"], "answer":"2"},
+              {"text":"What is 2 + 2 ?", "choices":["1", "2", "3", "4"], "answer":"4"}
+            ]`;
+```
+
+| Param | Type | Description |
+| --- | --- | --- |
+| questions | `Question[] | JSON string` | Input for definded questions in an array |
+| quizElementId | `String` | ID of the element to mount the quiz into |
+| quizName | `String` | Title of the quiz. Displayed on top |
+
+* * *
+
+<a name="guess-answer"></a>
+#### `guess(answer)`
+
+Use to select a choice of the active question.
+
+| Param | Type | Description |
+| --- | --- | --- |
+| answer | `String` |  Chosen answer  |
+
+* * *
+
+<a name="start"></a>
+#### `Quiz.start()`
+
+Start quiz. At this point the quiz HTML will be inserted into the provived element.
+
+Dispatches the `SidneyQuiz:start` event on the quiz container for you to react to from the outside.
+
+* * *
+
+<a name="quit"></a>
+#### `Quiz.quit()`
+
+Quits the quiz.
+
+Dispatches the `SidneyQuiz:quit` event on the quiz container for you to react to from the outside.
+
+* * *
+
+<a name="check-JSON"></a>
+#### `getQuestionsFromJson(jsonString)`
+
+Checks if the JSON String contains all the requirements (Text, choices, answer).
+If not it throws an error.
+
+Returns an array of `Question` objects that were parsed to the JSON string.
+
+* * *
+
+<a name="new-Question"></a>
+### `new Question(text, choices, answer)`
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | `String` | Input Question |
+| choices | `String[]` | Selection choices |
+| answer | `String` | Correct Answer |
+
+*** 
+
+<a name="correctAnswer"></a>
+### `.isCorrectAnswer(choice)`
+
+Returns if the given choice is the correct answer.
