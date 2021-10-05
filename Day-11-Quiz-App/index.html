@@ -14,6 +14,7 @@
     ></script>
     <link rel="stylesheet" href="quizFramework.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="quizBuilderCSS.css">
 </head>
 
 <body>
@@ -30,7 +31,6 @@
                 <button class="btn" id="createQuizButton" style="text-align: center">Create Custom Quiz </button>
             </div>
             <div id="sik-quiz"></div>
-            <div id="createQuiz"></div>
             <footer>
                 <div style="display: block; text-align: center; margin-top: 10px;">
                     <a class="backLink" href="../Week2.html">Back</a>
@@ -84,7 +84,6 @@
         quizElement.addEventListener("SidneyQuiz:start", () => {
             quizChooser.style.display = "none";
             customQuizContainer.style.display = "none";
-
         });
         quizElement.addEventListener("SidneyQuiz:quit", () => {
             quizChooser.style.display = "block";
@@ -103,13 +102,21 @@
             new Quiz(sportQuestions, elementId, "Sports Quiz").start()
         });
 
+        // Here starts the code related to the QuizBuilder
         const quizBuilderButton = document.getElementById("createQuizButton")
         quizBuilderButton.addEventListener("click", () => {
-            new QuizBuilder().start()
-            quizChooser.style.display = "none";
-            quizBuilderButton.style.display = "none";
-            customQuizContainer.style.display = "none";
+            new QuizBuilder(elementId).start();
         })
+
+        quizElement.addEventListener("QuizBuilder:start", () => {
+            quizChooser.style.display = "none";
+            customQuizContainer.style.display = "none";
+
+        });
+        quizElement.addEventListener("QuizBuilder:quit", () => {
+            quizChooser.style.display = "block";
+            customQuizContainer.style.display = "block";
+        });
 
 
         
