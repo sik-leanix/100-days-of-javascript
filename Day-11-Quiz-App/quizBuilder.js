@@ -1,6 +1,6 @@
 class QuizBuilder {
     _addQuestionButtonId = "newQuestionButton";
-
+    allQuestionsAreValid = true;
     constructor(entryElementId) {
         this.containerElement = document.getElementById(entryElementId)
     }
@@ -52,6 +52,7 @@ class QuizBuilder {
     }
 
     save() {
+        // TODO: implement guard that prevents saving if not all questions are valid.
         const questions = this._getQuestionsArrayFromInputValues();
         const quizTitle = document.getElementById('quizTitle').value;
         const quiz = {
@@ -79,6 +80,31 @@ class QuizBuilder {
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
         const answer = document.createElement("input");
+        const error = document.createElement("span");
+        error.style.display = "none";
+        error.style.color = "red";
+        let arrayAnswer = [];
+        let arrayChoices = [];
+        answer.addEventListener('input', () => {
+            const answerValue = answer.value;
+            const choicesValue = choices.value;
+            console.log(choicesValue);
+            answerValue.replace(/\s/g, "");
+            choicesValue.replace(/\s/g, "");
+            console.log(choicesValue);
+            arrayChoices = choicesValue.split(",");
+            arrayAnswer = answerValue.split(",");
+           for (let i = 0; i < arrayChoices.length; i++) {
+                //console.log(arrayChoices[i]);
+            if (arrayChoices[i] != arrayAnswer) { // TODO: build condition
+                error.style.display = "block";
+                error.textContent = "This answer is not available as a choice";
+                this.allQuestionsAreValid = true;
+            } else {
+                this.allQuestionsAreValid = true;
+                error.style.display = "none";
+            }
+        }});
 
         const questionTextHeader = document.createElement("text");
         const choicesHeader = document.createElement("text");
@@ -90,6 +116,7 @@ class QuizBuilder {
         this.questionsContainer.appendChild(choices);
         this.questionsContainer.appendChild(answerHeader);
         this.questionsContainer.appendChild(answer);
+        this.questionsContainer.appendChild(error);
 
         questionTextHeader.textContent = "Type in a question:";
         choicesHeader.textContent = "Type in the choices (comma separated): ";
