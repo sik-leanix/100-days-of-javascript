@@ -125,21 +125,22 @@ class QuizBuilder {
             // we can rely on the order of the three inputs to know
             // when one question ends and a new one starts
             if (element.classList.contains('questionText')) {
-            // since this element has the .questionText CSS class we know that its value should be the text of the question.
+                // since this element has the .questionText CSS class we know that its value should be the text of the question.
                 tempQuestion.text = element.value;
             } else if (element.classList.contains('questionChoices')) {
-            // since this element has the .questionChoices CSS class we know that its value should be the choices of the question.
+                // since this element has the .questionChoices CSS class we know that its value should be the choices of the question.
                 tempQuestion.choices = element.value
                 .split(',') // Turn it into an array, where comma is the delimeter.
                 .map((choice) => choice.trim()); // trim cuts of spaces to the left and right of a choice
             } else if (element.classList.contains('questionAnswer')) {
-            // since this element has the .questionAnswer CSS class we know that its value should be the answer of the question.
+                // since this element has the .questionAnswer CSS class we know that its value should be the answer of the question.
                 tempQuestion.answer = element.value;
-            // At this point our tempQuestion object contains a complete question and we can push it into our questions array.
+                // At this point our tempQuestion object contains a complete question and we can push it into our questions array.
+                // If there are input elements remaining in the formElementsArray then the element in
+                // the next iteration will be the .questionText input of the next question.
                 questions.push(tempQuestion);
         
-            // If there are input elements remaining in the formElementsArray then the element in
-            // the next iteration will be the .questionText input of the next question.
+                // We empty our helper object to be ready for the next question content if there are more elements to loop over.
                 tempQuestion = {};
             }
             return questions;
