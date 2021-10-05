@@ -1,23 +1,38 @@
 .inputStyles {
-    display: flex;
+    display: block;
     margin: 10px 0px;
-    width: 300px;
-    height: 20px;
+    width: 75%;
+    height: 25px;
 }
 
 .inputHeaderStyle {
     display: block;
     font-size: 1.5rem;
 }
-.answerInput {
-    display: flex;
-    margin: 10px 0px;
-    width: 300px;
-    height: 20px;
+.questionAnswer {
+    font-size: 1.5rem;
 }
-.newQuestionButton {
-    display: flex;
+
+.questionChoices {
+    font-size: 1.5rem;
+}
+
+.questionText {
+    font-size: 1.5rem;
+}
+
+.questionTitle {
+    font-size: 1.5rem;
+}
+#newQuestionButton {
+    cursor: pointer;
     background-color: #3399ff;
-    width: 308px;
-    height: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #fff;
+    padding: 10px 0;
+    width: 50%;
+    margin: 8px 0 8px 0;
+    border-radius: 3px;
+    border: none;
 }
