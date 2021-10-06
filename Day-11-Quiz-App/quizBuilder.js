@@ -8,9 +8,10 @@ class QuizBuilder {
     _quizBuilderHTMLBody() {
         return `
         <h1>Quiz Builder</h1>
+        <form>
             <div>
                 <h2 id="quizNameHeader"> Enter a Quiz Name:</h2>
-                <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..."></input>
+                <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..." required></input>
             </div>
             <hr>
             <h2>Questions</h2>
@@ -21,7 +22,8 @@ class QuizBuilder {
                 <button id="${this._addQuestionButtonId}">+ Add Question</button>
             </div>
         <hr>
-        <button class="btn" id="saveQuiz" style="text-align: center; background-color:#3399ff;" >Save</button>
+        <button class="btn" id="saveQuiz" style="text-align: center; background-color:#3399ff;">Save</button>
+        </form>
         <button class="btn" id="quizBuilderQuit" style="text-align: center; background-color:#3399ff;" >Quit</button>
     `
     }
@@ -34,13 +36,14 @@ class QuizBuilder {
         button.onclick = () => this.quit();
         const startEvent = new Event("QuizBuilder:start");
         this.containerElement.dispatchEvent(startEvent);
-        this._registerSaveButtonListener();
+        this._registerFormSubmitListener();
         this._registerAddQuestionButtonListener();
     }
 
-    _registerSaveButtonListener() {
+    _registerFormSubmitListener() {
         const button = document.getElementById("saveQuiz");
-        button.addEventListener("click", () => {
+        button.addEventListener("submit", (event) => {
+            event.preventDefault();
             this.save();
         }) 
     }
@@ -81,8 +84,12 @@ class QuizBuilder {
         const choices = document.createElement("input");
         const answer = document.createElement("input");
         const error = document.createElement("span");
+        questionText.setAttribute("required", "");
+        choices.setAttribute("required", "");  
+        answer.setAttribute("required", "");  
         error.style.display = "none";
         error.style.color = "red";
+        error.style.fontSize = "1.5rem"
         answer.addEventListener('input', () => {
             const answerValue = answer.value;
             const choicesValue = choices.value;  
