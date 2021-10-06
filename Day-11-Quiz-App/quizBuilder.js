@@ -83,28 +83,26 @@ class QuizBuilder {
         const error = document.createElement("span");
         error.style.display = "none";
         error.style.color = "red";
-        let arrayAnswer = [];
-        let arrayChoices = [];
         answer.addEventListener('input', () => {
             const answerValue = answer.value;
-            const choicesValue = choices.value;
-            console.log(choicesValue);
-            answerValue.replace(/\s/g, "");
-            choicesValue.replace(/\s/g, "");
-            console.log(choicesValue);
-            arrayChoices = choicesValue.split(",");
-            arrayAnswer = answerValue.split(",");
-           for (let i = 0; i < arrayChoices.length; i++) {
-                //console.log(arrayChoices[i]);
-            if (arrayChoices[i] != arrayAnswer) { // TODO: build condition
-                error.style.display = "block";
-                error.textContent = "This answer is not available as a choice";
-                this.allQuestionsAreValid = true;
-            } else {
+            const choicesValue = choices.value;  
+            const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
+            let answerIsInChoices = false;
+            for(let i = 0; i < arrayChoices.length; i++){
+                const currentChoice = arrayChoices[i];
+                if (currentChoice === answerValue.trim()) {
+                    answerIsInChoices = true;
+                }
+            }
+            if (answerIsInChoices) {
                 this.allQuestionsAreValid = true;
                 error.style.display = "none";
+            } else {
+                error.style.display = "block";
+                error.textContent = "This answer is not available as a choice";
+                this.allQuestionsAreValid = false;
             }
-        }});
+        });
 
         const questionTextHeader = document.createElement("text");
         const choicesHeader = document.createElement("text");
