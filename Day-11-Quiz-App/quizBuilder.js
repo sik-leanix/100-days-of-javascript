@@ -41,8 +41,8 @@ class QuizBuilder {
     }
 
     _registerFormSubmitListener() {
-        const button = document.getElementById("saveQuiz");
-        button.addEventListener("submit", (event) => {
+        this.saveButton = document.getElementById("saveQuiz");
+        this.saveButton.addEventListener("submit", (event) => {
             event.preventDefault();
             this.save();
         }) 
@@ -56,13 +56,15 @@ class QuizBuilder {
 
     save() {
         // TODO: implement guard that prevents saving if not all questions are valid.
-        const questions = this._getQuestionsArrayFromInputValues();
-        const quizTitle = document.getElementById('quizTitle').value;
-        const quiz = {
-            title: quizTitle,
-            questions,
-        };
-        console.log(quiz);
+        if (allQuestionsAreValid) { 
+            const questions = this._getQuestionsArrayFromInputValues();
+            const quizTitle = document.getElementById('quizTitle').value;
+            const quiz = {
+                title: quizTitle,
+                questions,
+            };  
+        }
+        
     }
 
     addQuestion() {
@@ -82,26 +84,30 @@ class QuizBuilder {
 
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
-        const answer = document.createElement("input");
+        this.answer = document.createElement("input");
         const error = document.createElement("span");
         questionText.setAttribute("required", "");
         choices.setAttribute("required", "");  
-        answer.setAttribute("required", "");  
+        this.answer.setAttribute("required", "");  
         error.style.display = "none";
         error.style.color = "red";
         error.style.fontSize = "1.5rem"
-        answer.addEventListener('input', () => {
-            const answerValue = answer.value;
+        this.answer.addEventListener('input', () => {
+            const answerValue = this.answer.value;
             const choicesValue = choices.value;  
             const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
             const answerIsInChoices = arrayChoices.includes(answerValue.trim())
             if (answerIsInChoices) {
                 this.allQuestionsAreValid = true;
                 error.style.display = "none";
+                this.saveButton.disabled = false;
+                this.answer.style.borderColor = "";
             } else {
                 error.style.display = "block";
                 error.textContent = "This answer is not available as a choice";
                 this.allQuestionsAreValid = false;
+                this.saveButton.disabled = true;
+                this.answer.style.borderColor = "red";
             }
         });
 
@@ -114,7 +120,7 @@ class QuizBuilder {
         this.questionsContainer.appendChild(choicesHeader);
         this.questionsContainer.appendChild(choices);
         this.questionsContainer.appendChild(answerHeader);
-        this.questionsContainer.appendChild(answer);
+        this.questionsContainer.appendChild(this.answer);
         this.questionsContainer.appendChild(error);
 
         questionTextHeader.textContent = "Type in a question:";
@@ -123,7 +129,7 @@ class QuizBuilder {
 
         questionText.placeholder = "Type in a question...";
         choices.placeholder = "Type in the choices...";
-        answer.placeholder = "Type in an answer...";
+        this.answer.placeholder = "Type in an answer...";
 
         questionTextHeader.className = "inputHeaderStyle"
         questionTextHeader.className = "inputHeaderStyle";
@@ -131,7 +137,7 @@ class QuizBuilder {
         answerHeader.className = "inputHeaderStyle";
         questionText.className = "inputStyles questionText";
         choices.className = "inputStyles questionChoices";
-        answer.className = "inputStyles questionAnswer";
+        this.answer.className = "inputStyles questionAnswer";
     }
 
     _getQuestionsArrayFromInputValues() {
