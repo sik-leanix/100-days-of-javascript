@@ -87,13 +87,7 @@ class QuizBuilder {
             const answerValue = answer.value;
             const choicesValue = choices.value;  
             const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
-            let answerIsInChoices = false;
-            for(let i = 0; i < arrayChoices.length; i++){
-                const currentChoice = arrayChoices[i];
-                if (currentChoice === answerValue.trim()) {
-                    answerIsInChoices = true;
-                }
-            }
+            const answerIsInChoices = arrayChoices.includes(answerValue.trim())
             if (answerIsInChoices) {
                 this.allQuestionsAreValid = true;
                 error.style.display = "none";
