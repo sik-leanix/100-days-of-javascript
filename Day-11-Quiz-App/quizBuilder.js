@@ -1,5 +1,6 @@
 class QuizBuilder {
     _addQuestionButtonId = "newQuestionButton";
+    _saveQuizButtonId = "saveQuizButton";
     allQuestionsAreValid = true;
     constructor(entryElementId, questionsContainerMaxHeight) {
         this.containerElement = document.getElementById(entryElementId)
@@ -23,7 +24,7 @@ class QuizBuilder {
                 <button id="${this._addQuestionButtonId}">+ Add Question</button>
             </div>
         <hr>
-        <button class="btn" id="saveQuiz" style="text-align: center; background-color:#3399ff;">Save</button>
+        <button class="btn" id="${this._saveQuizButtonId}" style="text-align: center; background-color:#3399ff;">Save</button>
         </form>
         <button class="btn" id="quizBuilderQuit" style="text-align: center; background-color:#3399ff;" >Quit</button>
     `
@@ -33,6 +34,7 @@ class QuizBuilder {
         this.containerElement.classList.add("quizBuilderContainer");
         this.containerElement.innerHTML = this._quizBuilderHTMLBody();
         this.addQuestionButton = document.getElementById(this._addQuestionButtonId);
+        this.saveButton = document.getElementById(this._saveQuizButtonId);
         this._createInputElements();
         const button = document.getElementById('quizBuilderQuit');
         button.onclick = () => this.quit();
@@ -46,8 +48,8 @@ class QuizBuilder {
     }
 
     _registerFormSubmitListener() {
-        this.saveButton = document.getElementById("saveQuiz");
-        this.saveButton.addEventListener("submit", (event) => {
+        const form = this.containerElement.getElementsByTagName("form")[0];
+        form.addEventListener("submit", (event) => {
             event.preventDefault();
             this.save();
         }) 
@@ -61,13 +63,15 @@ class QuizBuilder {
 
     save() {
         // TODO: implement guard that prevents saving if not all questions are valid.
-        if (allQuestionsAreValid) { 
+        if (this.allQuestionsAreValid) { 
             const questions = this._getQuestionsArrayFromInputValues();
             const quizTitle = document.getElementById('quizTitle').value;
             const quiz = {
                 title: quizTitle,
                 questions,
-            };  
+            };
+            console.log(quiz);
+            alert("success");
         }
         
     }
