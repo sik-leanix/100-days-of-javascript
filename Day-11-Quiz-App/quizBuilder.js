@@ -21,10 +21,10 @@ class QuizBuilder {
             <div id="questionsContainer">
             </div>
             <div>
-                <button id="${this._addQuestionButtonId}">+ Add Question</button>
+                <button type="button" id="${this._addQuestionButtonId}">+ Add Question</button>
             </div>
         <hr>
-        <button class="btn" id="${this._saveQuizButtonId}" style="text-align: center; background-color:#3399ff;">Save</button>
+        <button type="submit" class="btn" id="${this._saveQuizButtonId}" style="text-align: center; background-color:#3399ff;">Save</button>
         </form>
         <button class="btn" id="quizBuilderQuit" style="text-align: center; background-color:#3399ff;" >Quit</button>
     `
