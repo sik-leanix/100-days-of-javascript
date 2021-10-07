@@ -36,6 +36,7 @@ class Quiz {
     }
 
     start() {
+        this.containerElement.classList.add("sidneyQuizContainer");
         this.containerElement.innerHTML = this._quizHtmlBody();
         this._displayQuestion();
         this._startCountdown();
@@ -46,6 +47,7 @@ class Quiz {
     }
 
     quit() {
+        this.containerElement.classList.remove("sidneyQuizContainer");
         this.containerElement.textContent = '';
         this.score = 0;
         this.questionIndex = 0;

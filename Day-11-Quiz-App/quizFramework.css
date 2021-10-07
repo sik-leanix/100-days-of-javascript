@@ -1,18 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
 
-
-
-.quiz-box {
+.sidneyQuizContainer {
     width: 600px;
-    margin: 0 auto;
+    padding: 20px;
+    padding: 0 20px 20px 20px;
     background-color: #eee;
-    padding: 10px 50px 20px 50px;
     border: 3px solid rgb(1, 22, 209);
     border-radius: 5px;
-    
 }
 
-.quiz-box h1 {
+.sidneyQuizContainer h1 {
     background-color:#3399ff;
     font-size: 4rem;
     text-align: center;

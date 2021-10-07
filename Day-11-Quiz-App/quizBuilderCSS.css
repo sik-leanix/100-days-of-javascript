@@ -1,3 +1,27 @@
+.quizBuilderContainer {
+    width: 600px;
+    padding: 0 20px 20px 20px;
+    background-color: #eee;
+    border: 3px solid rgb(1, 22, 209);
+    border-radius: 5px;
+}
+
+.quizBuilderContainer h1 {
+    background-color:#3399ff;
+    font-size: 4rem;
+    text-align: center;
+    color: #fff;
+    padding: 10px 0;
+    width: 100%;
+    margin-bottom: 2rem;
+    border-radius: 3px;    
+}
+
+#questionsContainer.overflowScroll {
+    overflow: auto;
+    max-height: var(--questions-max-height);
+}
+
 .inputStyles {
     display: block;
     margin: 10px 0px;
@@ -35,4 +59,11 @@
     margin: 8px 0 8px 0;
     border-radius: 3px;
     border: none;
+}
+
+.error {
+    display: none;
+    color: red;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
 }

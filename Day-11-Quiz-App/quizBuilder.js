@@ -1,16 +1,19 @@
 class QuizBuilder {
     _addQuestionButtonId = "newQuestionButton";
+    _saveQuizButtonId = "saveQuizButton";
     allQuestionsAreValid = true;
-    constructor(entryElementId) {
+    constructor(entryElementId, questionsContainerMaxHeight) {
         this.containerElement = document.getElementById(entryElementId)
+        this.questionsContainerMaxHeight = questionsContainerMaxHeight;
     }
 
     _quizBuilderHTMLBody() {
         return `
         <h1>Quiz Builder</h1>
+        <form>
             <div>
                 <h2 id="quizNameHeader"> Enter a Quiz Name:</h2>
-                <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..."></input>
+                <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..." required></input>
             </div>
             <hr>
             <h2>Questions</h2>
@@ -18,29 +21,36 @@ class QuizBuilder {
             <div id="questionsContainer">
             </div>
             <div>
-                <button id="${this._addQuestionButtonId}">+ Add Question</button>
+                <button type="button" id="${this._addQuestionButtonId}">+ Add Question</button>
             </div>
         <hr>
-        <button class="btn" id="saveQuiz" style="text-align: center; background-color:#3399ff;" >Save</button>
+        <button type="submit" class="btn" id="${this._saveQuizButtonId}" style="text-align: center; background-color:#3399ff;">Save</button>
+        </form>
         <button class="btn" id="quizBuilderQuit" style="text-align: center; background-color:#3399ff;" >Quit</button>
     `
     }
 
     start() {
+        this.containerElement.classList.add("quizBuilderContainer");
         this.containerElement.innerHTML = this._quizBuilderHTMLBody();
         this.addQuestionButton = document.getElementById(this._addQuestionButtonId);
+        this.saveButton = document.getElementById(this._saveQuizButtonId);
         this._createInputElements();
         const button = document.getElementById('quizBuilderQuit');
         button.onclick = () => this.quit();
         const startEvent = new Event("QuizBuilder:start");
         this.containerElement.dispatchEvent(startEvent);
-        this._registerSaveButtonListener();
+        this._registerFormSubmitListener();
         this._registerAddQuestionButtonListener();
+        if (this.questionsContainerMaxHeight) {
+            this._addOverflowStylesToQuestionContainer();
+        }
     }
 
-    _registerSaveButtonListener() {
-        const button = document.getElementById("saveQuiz");
-        button.addEventListener("click", () => {
+    _registerFormSubmitListener() {
+        const form = this.containerElement.getElementsByTagName("form")[0];
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
             this.save();
         }) 
     }
@@ -53,15 +63,18 @@ class QuizBuilder {
 
     save() {
         // TODO: implement guard that prevents saving if not all questions are valid.
-        const questions = this._getQuestionsArrayFromInputValues();
-        const quizTitle = document.getElementById('quizTitle').value;
-        const quiz = {
-            title: quizTitle,
-            questions,
-        };
-        console.log(quiz);
+        if (this.allQuestionsAreValid) { 
+            const questions = this._getQuestionsArrayFromInputValues();
+            const quizTitle = document.getElementById('quizTitle').value;
+            const quiz = {
+                title: quizTitle,
+                questions,
+            };
+            console.log(quiz);
+            alert("success");
+        }
+        
     }
-
     addQuestion() {
         const newHR = document.createElement("hr")
         this.questionsContainer.appendChild(newHR);
@@ -69,6 +82,7 @@ class QuizBuilder {
     }
 
     quit() {
+        this.containerElement.classList.remove("quizBuilderContainer");
         this.containerElement.textContent = '';
         const quitEvent = new Event("QuizBuilder:quit");
         this.containerElement.dispatchEvent(quitEvent);
@@ -81,30 +95,12 @@ class QuizBuilder {
         const choices = document.createElement("input");
         const answer = document.createElement("input");
         const error = document.createElement("span");
-        error.style.display = "none";
-        error.style.color = "red";
-        let arrayAnswer = [];
-        let arrayChoices = [];
-        answer.addEventListener('input', () => {
-            const answerValue = answer.value;
-            const choicesValue = choices.value;
-            console.log(choicesValue);
-            answerValue.replace(/\s/g, "");
-            choicesValue.replace(/\s/g, "");
-            console.log(choicesValue);
-            arrayChoices = choicesValue.split(",");
-            arrayAnswer = answerValue.split(",");
-           for (let i = 0; i < arrayChoices.length; i++) {
-                //console.log(arrayChoices[i]);
-            if (arrayChoices[i] != arrayAnswer) { // TODO: build condition
-                error.style.display = "block";
-                error.textContent = "This answer is not available as a choice";
-                this.allQuestionsAreValid = true;
-            } else {
-                this.allQuestionsAreValid = true;
-                error.style.display = "none";
-            }
-        }});
+        questionText.setAttribute("required", "");
+        choices.setAttribute("required", "");  
+        answer.setAttribute("required", "");  
+
+        this._registerInputValidation(choices, answer, error)
+        
 
         const questionTextHeader = document.createElement("text");
         const choicesHeader = document.createElement("text");
@@ -133,6 +129,30 @@ class QuizBuilder {
         questionText.className = "inputStyles questionText";
         choices.className = "inputStyles questionChoices";
         answer.className = "inputStyles questionAnswer";
+        error.className = "error"
+    }
+
+    _registerInputValidation(choicesElement, answerElement, errorElement) {
+        const validateAnswer = () => {
+            const answerValue = answerElement.value;
+            const choicesValue = choicesElement.value;  
+            const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
+            const answerIsInChoices = arrayChoices.includes(answerValue.trim())
+            if (answerIsInChoices) {
+                this.allQuestionsAreValid = true;
+                errorElement.style.display = "none";
+                this.saveButton.disabled = false;
+                answerElement.style.borderColor = "";
+            } else {
+                errorElement.style.display = "block";
+                errorElement.textContent = "This answer is not available as a choice";
+                this.allQuestionsAreValid = false;
+                this.saveButton.disabled = true;
+                answerElement.style.borderColor = "red";
+            }
+        }
+        answerElement.addEventListener('input', validateAnswer);
+        choicesElement.addEventListener('input', validateAnswer);
     }
 
     _getQuestionsArrayFromInputValues() {
@@ -172,5 +192,12 @@ class QuizBuilder {
             }
             return questions;
         }, []);
+    }
+
+    _addOverflowStylesToQuestionContainer() {
+        if (this.questionsContainerMaxHeight) {
+            this.containerElement.style.setProperty('--questions-max-height', this.questionsContainerMaxHeight);
+            this.questionsContainer.classList.add("overflowScroll");
+        }
     }
 }
