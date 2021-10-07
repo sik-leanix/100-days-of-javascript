@@ -1,8 +1,9 @@
 class QuizBuilder {
     _addQuestionButtonId = "newQuestionButton";
     allQuestionsAreValid = true;
-    constructor(entryElementId) {
+    constructor(entryElementId, questionsContainerMaxHeight) {
         this.containerElement = document.getElementById(entryElementId)
+        this.questionsContainerMaxHeight = questionsContainerMaxHeight;
     }
 
     _quizBuilderHTMLBody() {
@@ -39,6 +40,9 @@ class QuizBuilder {
         this.containerElement.dispatchEvent(startEvent);
         this._registerFormSubmitListener();
         this._registerAddQuestionButtonListener();
+        if (this.questionsContainerMaxHeight) {
+            this._addOverflowStylesToQuestionContainer();
+        }
     }
 
     _registerFormSubmitListener() {
@@ -187,5 +191,12 @@ class QuizBuilder {
             }
             return questions;
         }, []);
+    }
+
+    _addOverflowStylesToQuestionContainer() {
+        if (this.questionsContainerMaxHeight) {
+            this.containerElement.style.setProperty('--questions-max-height', this.questionsContainerMaxHeight);
+            this.questionsContainer.classList.add("overflowScroll");
+        }
     }
 }
