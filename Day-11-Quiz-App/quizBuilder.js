@@ -98,9 +98,6 @@ class QuizBuilder {
         questionText.setAttribute("required", "");
         choices.setAttribute("required", "");  
         answer.setAttribute("required", "");  
-        error.style.display = "none";
-        error.style.color = "red";
-        error.style.fontSize = "1.5rem"
 
         this._registerInputValidation(choices, answer, error)
         
@@ -125,7 +122,6 @@ class QuizBuilder {
         choices.placeholder = "Type in the choices...";
         answer.placeholder = "Type in an answer...";
 
-        // TODO: add className to error element to apply styling seen above
         questionTextHeader.className = "inputHeaderStyle"
         questionTextHeader.className = "inputHeaderStyle";
         choicesHeader.className = "inputHeaderStyle";
@@ -133,6 +129,7 @@ class QuizBuilder {
         questionText.className = "inputStyles questionText";
         choices.className = "inputStyles questionChoices";
         answer.className = "inputStyles questionAnswer";
+        error.className = "error"
     }
 
     _registerInputValidation(choicesElement, answerElement, errorElement) {
