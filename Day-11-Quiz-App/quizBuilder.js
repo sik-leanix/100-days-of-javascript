@@ -29,6 +29,7 @@ class QuizBuilder {
     }
 
     start() {
+        this.containerElement.classList.add("quizBuilderContainer");
         this.containerElement.innerHTML = this._quizBuilderHTMLBody();
         this.addQuestionButton = document.getElementById(this._addQuestionButtonId);
         this._createInputElements();
@@ -73,6 +74,7 @@ class QuizBuilder {
     }
 
     quit() {
+        this.containerElement.classList.remove("quizBuilderContainer");
         this.containerElement.textContent = '';
         const quitEvent = new Event("QuizBuilder:quit");
         this.containerElement.dispatchEvent(quitEvent);

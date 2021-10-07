@@ -16,6 +16,13 @@ p {
     line-height: 1.5;
 }
 
+.quiz-box {
+    margin-top: 10vh;
+    background-color: #eee;
+    padding: 20px;
+    border: 0 transparent;
+    border-radius: 5px;
+}
 
 .container {
     max-width: 900px;
