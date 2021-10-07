@@ -66,7 +66,6 @@ class QuizBuilder {
         }
         
     }
-
     addQuestion() {
         const newHR = document.createElement("hr")
         this.questionsContainer.appendChild(newHR);
@@ -84,32 +83,17 @@ class QuizBuilder {
 
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
-        this.answer = document.createElement("input");
+        const answer = document.createElement("input");
         const error = document.createElement("span");
         questionText.setAttribute("required", "");
         choices.setAttribute("required", "");  
-        this.answer.setAttribute("required", "");  
+        answer.setAttribute("required", "");  
         error.style.display = "none";
         error.style.color = "red";
         error.style.fontSize = "1.5rem"
-        this.answer.addEventListener('input', () => {
-            const answerValue = this.answer.value;
-            const choicesValue = choices.value;  
-            const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
-            const answerIsInChoices = arrayChoices.includes(answerValue.trim())
-            if (answerIsInChoices) {
-                this.allQuestionsAreValid = true;
-                error.style.display = "none";
-                this.saveButton.disabled = false;
-                this.answer.style.borderColor = "";
-            } else {
-                error.style.display = "block";
-                error.textContent = "This answer is not available as a choice";
-                this.allQuestionsAreValid = false;
-                this.saveButton.disabled = true;
-                this.answer.style.borderColor = "red";
-            }
-        });
+
+        this._registerInputValidation(choices, answer, error)
+        
 
         const questionTextHeader = document.createElement("text");
         const choicesHeader = document.createElement("text");
@@ -120,7 +104,7 @@ class QuizBuilder {
         this.questionsContainer.appendChild(choicesHeader);
         this.questionsContainer.appendChild(choices);
         this.questionsContainer.appendChild(answerHeader);
-        this.questionsContainer.appendChild(this.answer);
+        this.questionsContainer.appendChild(answer);
         this.questionsContainer.appendChild(error);
 
         questionTextHeader.textContent = "Type in a question:";
@@ -129,15 +113,39 @@ class QuizBuilder {
 
         questionText.placeholder = "Type in a question...";
         choices.placeholder = "Type in the choices...";
-        this.answer.placeholder = "Type in an answer...";
+        answer.placeholder = "Type in an answer...";
 
+        // TODO: add className to error element to apply styling seen above
         questionTextHeader.className = "inputHeaderStyle"
         questionTextHeader.className = "inputHeaderStyle";
         choicesHeader.className = "inputHeaderStyle";
         answerHeader.className = "inputHeaderStyle";
         questionText.className = "inputStyles questionText";
         choices.className = "inputStyles questionChoices";
-        this.answer.className = "inputStyles questionAnswer";
+        answer.className = "inputStyles questionAnswer";
+    }
+
+    _registerInputValidation(choicesElement, answerElement, errorElement) {
+        const validateAnswer = () => {
+            const answerValue = answerElement.value;
+            const choicesValue = choicesElement.value;  
+            const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
+            const answerIsInChoices = arrayChoices.includes(answerValue.trim())
+            if (answerIsInChoices) {
+                this.allQuestionsAreValid = true;
+                errorElement.style.display = "none";
+                this.saveButton.disabled = false;
+                answerElement.style.borderColor = "";
+            } else {
+                errorElement.style.display = "block";
+                errorElement.textContent = "This answer is not available as a choice";
+                this.allQuestionsAreValid = false;
+                this.saveButton.disabled = true;
+                answerElement.style.borderColor = "red";
+            }
+        }
+        answerElement.addEventListener('input', validateAnswer);
+        choicesElement.addEventListener('input', validateAnswer);
     }
 
     _getQuestionsArrayFromInputValues() {
