@@ -56,9 +56,32 @@
     color: #fff;
     padding: 10px 0;
     width: 50%;
-    margin: 8px 0 8px 0;
     border-radius: 3px;
     border: none;
+}
+
+.customQuizButton {
+    text-align: center
+}
+
+#editQuizSelect {
+    width: 89%;
+}
+
+#editQuizButton {
+    width: 10%;
+    float: right;
+}
+
+.editQuiz {
+    background-color: #ddd;
+    font-size: 1.8rem;
+    color: black;
+    border: 1px solid #3399ff;
+    border-radius: 5px;
+    margin: 7px 0;
+    padding: 1rem;
+    outline: none;
 }
 
 .error {
