@@ -62,7 +62,6 @@ class QuizBuilder {
     }
 
     save() {
-        // TODO: implement guard that prevents saving if not all questions are valid.
         if (this.allQuestionsAreValid) { 
             const questions = this._getQuestionsArrayFromInputValues();
             const quizTitle = document.getElementById('quizTitle').value;
@@ -70,8 +69,14 @@ class QuizBuilder {
                 title: quizTitle,
                 questions,
             };
-            console.log(quiz);
-            alert("success");
+            const existingQuizzesString = localStorage.getItem('SidneyQuiz:custom');
+            if (existingQuizzesString) {
+                const existingQuizzes = JSON.parse(existingQuizzesString);
+                localStorage.setItem('SidneyQuiz:custom', JSON.stringify(existingQuizzes.concat(quiz)));
+            } else {
+                localStorage.setItem('SidneyQuiz:custom', JSON.stringify([quiz]));
+            }
+            this.quit()
         }
         
     }
