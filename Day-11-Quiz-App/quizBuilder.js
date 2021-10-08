@@ -17,12 +17,11 @@ class QuizBuilder {
             </div>
             <hr>
             <h2>Questions</h2>
-            <hr>
             <div id="questionsContainer">
             </div>
             <div>
                 <button type="button" id="${this._addQuestionButtonId}">+ Add Question</button>
-            </div>
+            </div>  
         <hr>
         <button type="submit" class="btn" id="${this._saveQuizButtonId}" style="text-align: center; background-color:#3399ff;">Save</button>
         </form>
@@ -45,6 +44,17 @@ class QuizBuilder {
         if (this.questionsContainerMaxHeight) {
             this._addOverflowStylesToQuestionContainer();
         }
+        this._registerSubmitFromSelect();
+    }
+
+    _registerSubmitFromSelect() {
+        const button = document.getElementById("editQuizButton");
+        const select = document.getElementById("editQuizSelect")
+        console.log(select.value)
+        button.addEventListener("submit", (event) => {
+            event.preventDefault();
+            console.log(select.value);
+        })
     }
 
     _registerFormSubmitListener() {
@@ -81,8 +91,8 @@ class QuizBuilder {
         
     }
     addQuestion() {
-        const newHR = document.createElement("hr")
-        this.questionsContainer.appendChild(newHR);
+        this.newHR = document.createElement("hr");
+        this.questionsContainer.appendChild(this.newHR);
         this._createInputElements()
     }
 
@@ -96,6 +106,7 @@ class QuizBuilder {
     _createInputElements() {
         this.questionsContainer = document.getElementById("questionsContainer");
 
+        const removeQuestionButton = document.createElement("button");
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
         const answer = document.createElement("input");
@@ -111,6 +122,7 @@ class QuizBuilder {
         const choicesHeader = document.createElement("text");
         const answerHeader = document.createElement("text");
 
+        this.questionsContainer.appendChild(removeQuestionButton);
         this.questionsContainer.appendChild(questionTextHeader);
         this.questionsContainer.appendChild(questionText);
         this.questionsContainer.appendChild(choicesHeader);
@@ -119,6 +131,25 @@ class QuizBuilder {
         this.questionsContainer.appendChild(answer);
         this.questionsContainer.appendChild(error);
 
+
+        // Shows removeQuestionButton 
+        removeQuestionButton.textContent = "Remove Questions";
+        removeQuestionButton.className = "removeQuestionButton";
+        choicesHeader.style.display = "inline-block";
+
+        removeQuestionButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            removeQuestionButton.remove();
+            questionTextHeader.remove();
+            questionText.remove();
+            choicesHeader.remove();
+            choices.remove();
+            answerHeader.remove();
+            answer.remove();
+            error.remove();
+            this.newHR.remove();
+        })
+        
         questionTextHeader.textContent = "Type in a question:";
         choicesHeader.textContent = "Type in the choices (comma separated): ";
         answerHeader.textContent = "Type in an answer:";

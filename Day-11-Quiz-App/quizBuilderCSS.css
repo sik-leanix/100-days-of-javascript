@@ -84,6 +84,15 @@
     outline: none;
 }
 
+.removeQuestionButton {
+    display: inline;
+    background-color: red;
+    border-radius: 5px;
+    float: right;
+    color: white;
+
+}
+
 .error {
     display: none;
     color: red;

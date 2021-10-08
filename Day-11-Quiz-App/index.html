@@ -30,8 +30,10 @@
                 <hr>
             <div id="customQuizButtonListContainer"></div>
             <button class="btn" id="createQuizButton" style="text-align: center">Create Custom Quiz </button>
+        <form>
             <select class="editQuiz" id="editQuizSelect"></select>
-            <button class="editQuiz" id="editQuizButton" style="text-align: center; display: inline-block">Edit</button>
+            <input type="submit" class="editQuiz" id="editQuizButton" style="text-align: center; display: inline-block" value="Edit">
+        </form>
             </div>
             <div id="sik-quiz"></div>
             <footer>
@@ -129,7 +131,11 @@
             const customQuizButtonContainer = document.getElementById("customQuizButtonListContainer");
             customQuizButtonContainer.textContent = '';
             const customQuizzesString = localStorage.getItem("SidneyQuiz:custom");
+            const editQuizButton = document.getElementById("editQuizButton");
+            const editQuizSelect = document.getElementById("editQuizSelect");
+
             if (customQuizzesString) {
+                editQuizButton.style.display = "inline-block";
                 editQuizSelect.style.display = "inline-block";
                 const customQuizzes = JSON.parse(customQuizzesString);
                 customQuizzes.forEach((customQuiz) => {
@@ -141,15 +147,17 @@
                         new Quiz(JSON.stringify(customQuiz.questions), elementId, `${customQuiz.title}`).start()
                     });
 
-                    const editQuizSelect = document.getElementById("editQuizSelect");
+                    
                     const editQuizOption = document.createElement("option");
 
                     // TODO: set the value of the option element
                     editQuizSelect.appendChild(editQuizOption);
+                    editQuizOption.value = customQuiz.title
+                    editQuizOption.textContent = `Quiz: ${customQuiz.title}`;
                 })      
             } else {
-                const editQuizSelect = document.getElementById("editQuizSelect");
                 editQuizSelect.style.display = "none";
+                editQuizButton.style.display = "none";
             }
         }
         
