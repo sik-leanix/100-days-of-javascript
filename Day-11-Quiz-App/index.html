@@ -128,6 +128,18 @@
         });
         displayCustomQuizButtonsFromLocalStorage(); // displays custom quiz buttons on initial page load
 
+        const editQuizSelect = document.getElementById("editQuizSelect");
+        const editQuizButton = document.getElementById("editQuizButton");
+        const confirmDeletion = true;
+        editQuizButton.addEventListener("click", () => {
+            console.log(editQuizSelect.value)
+            console.log(this.customQuizzes);
+            if (confirmDeletion) {
+                let deletionArray = this.customQuizzes.filter()
+            }
+        })
+       
+
         function displayCustomQuizButtonsFromLocalStorage() {
             const customQuizButtonContainer = document.getElementById("customQuizButtonListContainer");
             customQuizButtonContainer.textContent = '';
@@ -135,13 +147,14 @@
             const editQuizButton = document.getElementById("editQuizButton");
             const editQuizSelect = document.getElementById("editQuizSelect");
             const deleteQuizButton = document.getElementById("deleteQuizButton");
-
+            
+        
             if (customQuizzesString) {
                 deleteQuizButton.style.display = "inline-block";
                 editQuizButton.style.display = "inline-block";
                 editQuizSelect.style.display = "inline-block";
-                const customQuizzes = JSON.parse(customQuizzesString);
-                customQuizzes.forEach((customQuiz) => {
+                this.customQuizzes = JSON.parse(customQuizzesString);
+                this.customQuizzes.forEach((customQuiz) => {
                     const button = document.createElement("button");
                     button.className = "btn customQuizButton"
                     customQuizButtonContainer.appendChild(button)
@@ -151,9 +164,8 @@
                     });
 
                     
-                    const editQuizOption = document.createElement("option");
+                    editQuizOption = document.createElement("option");
 
-                    // TODO: set the value of the option element
                     editQuizSelect.appendChild(editQuizOption);
                     editQuizOption.value = customQuiz.title
                     editQuizOption.textContent = `Quiz: ${customQuiz.title}`;
@@ -164,7 +176,15 @@
                 editQuizButton.style.display = "none";
             }
         }
-        
+
+//             editQuizButton.addEventListener("click", () => {
+//             if (confirm("Are you sure you want to delete the Quiz?")) {
+//     console.log("Yeah!")
+//     return confirmDeletion
+// } else {
+//             console.log("NO!")
+//             return !confirmDeletion
+//             }
     </script>
 </body>
 

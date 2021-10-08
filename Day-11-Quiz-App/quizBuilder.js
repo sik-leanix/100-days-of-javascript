@@ -56,11 +56,11 @@ class QuizBuilder {
 
     _registerSubmitFromSelect() {
         const button = document.getElementById("editQuizButton");
-        const select = document.getElementById("editQuizSelect")
-        console.log(select.value)
+        this.editQuizSelect = document.getElementById("editQuizSelect")
+        console.log(editQuizSelect.value)
         button.addEventListener("submit", (event) => {
             event.preventDefault();
-            console.log(select.value);
+            console.log(editQuizSelect.value);
         })
     }
 
@@ -104,6 +104,7 @@ class QuizBuilder {
     }
 
     quit() {
+        const removeSelectOptions = this.editQuizSelect.options.length = 0;
         this.containerElement.classList.remove("quizBuilderContainer");
         this.containerElement.textContent = '';
         const quitEvent = new Event("QuizBuilder:quit");
@@ -192,6 +193,7 @@ class QuizBuilder {
                 this.allQuestionsAreValid = false;
                 this.saveButton.disabled = true;
                 answerElement.style.borderColor = "red";
+                answerElement.style.borderRadius = "5px"
             }
         }
         answerElement.addEventListener('input', validateAnswer);
