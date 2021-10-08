@@ -15,8 +15,8 @@ class QuizBuilder {
                 <h2 id="quizNameHeader"> Enter a Quiz Name:</h2>
                 <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..." required></input>
             </div>
-            <hr>
             <h2>Questions</h2>
+            <hr id="firstHRaboveDeleteDisplay">
             <div id="questionsContainer">
             </div>
             <div>
