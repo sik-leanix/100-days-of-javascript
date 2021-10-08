@@ -32,7 +32,8 @@
             <button class="btn" id="createQuizButton" style="text-align: center">Create Custom Quiz </button>
         <form>
             <select class="editQuiz" id="editQuizSelect"></select>
-            <input type="submit" class="editQuiz" id="editQuizButton" style="text-align: center; display: inline-block" value="Edit">
+            <input type="button" class="editQuiz" id="editQuizButton" style="text-align: center; display: inline-block" value="Edit">
+            <input type="button" class="editQuiz" id="deleteQuizButton" style="text-align: center; display: inline-block" value="Delete">
         </form>
             </div>
             <div id="sik-quiz"></div>
@@ -133,8 +134,10 @@
             const customQuizzesString = localStorage.getItem("SidneyQuiz:custom");
             const editQuizButton = document.getElementById("editQuizButton");
             const editQuizSelect = document.getElementById("editQuizSelect");
+            const deleteQuizButton = document.getElementById("deleteQuizButton");
 
             if (customQuizzesString) {
+                deleteQuizButton.style.display = "inline-block";
                 editQuizButton.style.display = "inline-block";
                 editQuizSelect.style.display = "inline-block";
                 const customQuizzes = JSON.parse(customQuizzesString);
@@ -157,6 +160,7 @@
                 })      
             } else {
                 editQuizSelect.style.display = "none";
+                deleteQuizButton.style.display = "none";
                 editQuizButton.style.display = "none";
             }
         }

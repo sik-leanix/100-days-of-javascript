@@ -65,12 +65,19 @@
 }
 
 #editQuizSelect {
-    width: 89%;
+    width: 78%;
 }
 
 #editQuizButton {
     width: 10%;
-    float: right;
+    cursor: pointer;
+}
+
+#deleteQuizButton {
+    width: 11%;
+    cursor: pointer;
+    background-color: red;
+    border-color: red;
 }
 
 .editQuiz {

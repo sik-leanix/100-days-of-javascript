@@ -10,7 +10,7 @@ class QuizBuilder {
     _quizBuilderHTMLBody() {
         return `
         <h1>Quiz Builder</h1>
-        <form>
+        <form id="formID">
             <div>
                 <h2 id="quizNameHeader"> Enter a Quiz Name:</h2>
                 <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..." required></input>
@@ -45,6 +45,13 @@ class QuizBuilder {
             this._addOverflowStylesToQuestionContainer();
         }
         this._registerSubmitFromSelect();
+        const form = document.getElementById("formID");
+        // Disable enter to fix deleting question bug
+        form.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+            }
+        });
     }
 
     _registerSubmitFromSelect() {
