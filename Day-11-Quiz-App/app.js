@@ -148,6 +148,7 @@ class Quiz {
           <div class="quiz-repeat">
             <button class="btn" id="restartQuizButton" style="text-align: center; background-color:#3399ff;">Take Quiz Again</button>
             <button class="btn" id="quitQuizButtonEnd" style="text-align: center; background-color:#3399ff;" >Quit</button>
+            <hr>
           </div>
         `;
         this.containerElement.innerHTML = quizEndHTML;
