@@ -2,9 +2,10 @@ class QuizBuilder {
     _addQuestionButtonId = "newQuestionButton";
     _saveQuizButtonId = "saveQuizButton";
     allQuestionsAreValid = true;
-    constructor(entryElementId, questionsContainerMaxHeight) {
+    constructor(entryElementId, quizDataToEdit, questionsContainerMaxHeight) {
         this.containerElement = document.getElementById(entryElementId)
         this.questionsContainerMaxHeight = questionsContainerMaxHeight;
+        this.quizDataToEdit = quizDataToEdit;
     }
 
     _quizBuilderHTMLBody() {
@@ -89,7 +90,16 @@ class QuizBuilder {
             const existingQuizzesString = localStorage.getItem('SidneyQuiz:custom');
             if (existingQuizzesString) {
                 const existingQuizzes = JSON.parse(existingQuizzesString);
-                localStorage.setItem('SidneyQuiz:custom', JSON.stringify(existingQuizzes.concat(quiz)));
+                if (this.quizDataToEdit) {
+                    localStorage.setItem('SidneyQuiz:custom', JSON.stringify(existingQuizzes.map(existingQuiz => {
+                        if (existingQuiz.title === this.quizDataToEdit.title) {
+                            existingQuiz.questions = questions
+                        }
+                        return existingQuiz;
+                    })));
+                } else {
+                    localStorage.setItem('SidneyQuiz:custom', JSON.stringify(existingQuizzes.concat(quiz)));
+                }
             } else {
                 localStorage.setItem('SidneyQuiz:custom', JSON.stringify([quiz]));
             }
@@ -97,14 +107,14 @@ class QuizBuilder {
         }
         
     }
+
     addQuestion() {
         this.newHR = document.createElement("hr");
         this.questionsContainer.appendChild(this.newHR);
-        this._createInputElements()
+        this._addInputElementsForOneQuestion()
     }
 
     quit() {
-        const removeSelectOptions = this.editQuizSelect.options.length = 0;
         this.containerElement.classList.remove("quizBuilderContainer");
         this.containerElement.textContent = '';
         const quitEvent = new Event("QuizBuilder:quit");
@@ -112,6 +122,19 @@ class QuizBuilder {
     }
 
     _createInputElements() {
+        if (this.quizDataToEdit) {
+            const quizTitle = document.getElementById("quizTitle");
+            quizTitle.disabled = true
+            quizTitle.value = this.quizDataToEdit.title;
+            this.quizDataToEdit.questions.forEach((question) => {
+                this._addInputElementsForOneQuestion(question);
+            })
+        } else {
+            this._addInputElementsForOneQuestion();
+        }
+    }
+
+    _addInputElementsForOneQuestion(questionData) {
         this.questionsContainer = document.getElementById("questionsContainer");
 
         const removeQuestionButton = document.createElement("button");
@@ -122,6 +145,12 @@ class QuizBuilder {
         questionText.setAttribute("required", "");
         choices.setAttribute("required", "");  
         answer.setAttribute("required", "");  
+
+        if (questionData) {
+            choices.value = questionData.choices;
+            answer.value = questionData.answer;
+            questionText.value = questionData.text;
+        }
 
         this._registerInputValidation(choices, answer, error)
         

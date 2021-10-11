@@ -119,42 +119,59 @@
             customQuizContainer.style.display = "none";
 
         });
+
         quizElement.addEventListener("QuizBuilder:quit", () => {
             // TODO: pass data of quiz that was just saved along in event, so that we only need to add one more button for the new quiz instead of rebuilding all buttons.
             quizChooser.style.display = "block";
             customQuizContainer.style.display = "block";
             // TODO: implement dedicated QuizBuilder:save event, as we do not need to rebuild the buttons if no quiz was created.
-            displayCustomQuizButtonsFromLocalStorage(); // reloads custom quiz buttons
+            displayCustomQuizButtonsFromLocalStorage(getCustomQuizzesFromLocalStorage()); // reloads custom quiz buttons
         });
-        displayCustomQuizButtonsFromLocalStorage(); // displays custom quiz buttons on initial page load
+        displayCustomQuizButtonsFromLocalStorage(getCustomQuizzesFromLocalStorage()); // displays custom quiz buttons on initial page load
 
         const editQuizSelect = document.getElementById("editQuizSelect");
         const editQuizButton = document.getElementById("editQuizButton");
-        const confirmDeletion = true;
+        let confirmDeletion = true;
         editQuizButton.addEventListener("click", () => {
-            console.log(editQuizSelect.value)
-            console.log(this.customQuizzes);
+            // TODO: Validate that editQuizSelect actually has a value before doing anything
+            const titleOfQuizToEdit = editQuizSelect.value;
+            const quizLocalStorageString = localStorage.getItem("SidneyQuiz:custom")
+            const parsedQuizzes = JSON.parse(quizLocalStorageString);
+            const quizToEdit = parsedQuizzes.find(quiz => titleOfQuizToEdit === quiz.title);
+            new QuizBuilder(elementId, quizToEdit).start();
+        })
+        const confirmDeletionFunction = () => {
+            const confirmDeletionAlert = confirm("Are you sure you want to delete the Quiz?");
+            if(confirmDeletionAlert === true) {
+                console.log("Nooo")
+                return confirmDeletion 
+            } else {
+                return !confirmDeletion
+            }
+        }
+        const deleteQuizButton = document.getElementById("deleteQuizButton");
+        deleteQuizButton.addEventListener("click", () => {
+            confirmDeletionFunction();
             if (confirmDeletion) {
-                let deletionArray = this.customQuizzes.filter()
+                console.log("Yes!")
+                let newArrayWithoutSelectedQuiz = customQuizzes.filter(customQuiz => customQuiz.title != editQuizSelect.value);
+                localStorage.removeItem("SidneyQuiz:custom");
+                localStorage.setItem("SidneyQuiz:custom", JSON.stringify(newArrayWithoutSelectedQuiz));
             }
         })
-       
 
-        function displayCustomQuizButtonsFromLocalStorage() {
+        function displayCustomQuizButtonsFromLocalStorage(customQuizzes) {
             const customQuizButtonContainer = document.getElementById("customQuizButtonListContainer");
             customQuizButtonContainer.textContent = '';
-            const customQuizzesString = localStorage.getItem("SidneyQuiz:custom");
             const editQuizButton = document.getElementById("editQuizButton");
             const editQuizSelect = document.getElementById("editQuizSelect");
             const deleteQuizButton = document.getElementById("deleteQuizButton");
-            
         
-            if (customQuizzesString) {
+            if (customQuizzes) {
                 deleteQuizButton.style.display = "inline-block";
                 editQuizButton.style.display = "inline-block";
                 editQuizSelect.style.display = "inline-block";
-                this.customQuizzes = JSON.parse(customQuizzesString);
-                this.customQuizzes.forEach((customQuiz) => {
+                customQuizzes.forEach((customQuiz) => {
                     const button = document.createElement("button");
                     button.className = "btn customQuizButton"
                     customQuizButtonContainer.appendChild(button)
@@ -177,14 +194,10 @@
             }
         }
 
-//             editQuizButton.addEventListener("click", () => {
-//             if (confirm("Are you sure you want to delete the Quiz?")) {
-//     console.log("Yeah!")
-//     return confirmDeletion
-// } else {
-//             console.log("NO!")
-//             return !confirmDeletion
-//             }
+        function getCustomQuizzesFromLocalStorage() {
+            const customQuizzesString = localStorage.getItem("SidneyQuiz:custom");
+            return customQuizzesString ? JSON.parse(customQuizzesString) : undefined;
+        }
     </script>
 </body>
 
