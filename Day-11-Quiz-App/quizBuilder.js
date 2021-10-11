@@ -58,10 +58,8 @@ class QuizBuilder {
     _registerSubmitFromSelect() {
         const button = document.getElementById("editQuizButton");
         this.editQuizSelect = document.getElementById("editQuizSelect")
-        console.log(editQuizSelect.value)
         button.addEventListener("submit", (event) => {
             event.preventDefault();
-            console.log(editQuizSelect.value);
         })
     }
 

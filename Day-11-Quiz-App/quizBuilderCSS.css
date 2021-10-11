@@ -76,6 +76,7 @@
 }
 
 #deleteQuizButton {
+    padding-left: 7px;
     width: 11%;
     cursor: pointer;
     background-color: red;

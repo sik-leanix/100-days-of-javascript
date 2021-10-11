@@ -31,7 +31,9 @@
             <div id="customQuizButtonListContainer"></div>
             <button class="btn" id="createQuizButton" style="text-align: center">Create Custom Quiz </button>
         <form>
-            <select class="editQuiz" id="editQuizSelect"></select>
+            <select class="editQuiz" id="editQuizSelect">
+                <option id="optionSelect" disabled selected value> - select quiz - </option>
+            </select>
             <input type="button" class="editQuiz" id="editQuizButton" style="text-align: center; display: inline-block" value="Edit">
             <input type="button" class="editQuiz" id="deleteQuizButton" style="text-align: center; display: inline-block" value="Delete">
         </form>
@@ -133,12 +135,14 @@
         const editQuizButton = document.getElementById("editQuizButton");
         let confirmDeletion = true;
         editQuizButton.addEventListener("click", () => {
-            // TODO: Validate that editQuizSelect actually has a value before doing anything
-            const titleOfQuizToEdit = editQuizSelect.value;
-            const quizLocalStorageString = localStorage.getItem("SidneyQuiz:custom")
-            const parsedQuizzes = JSON.parse(quizLocalStorageString);
-            const quizToEdit = parsedQuizzes.find(quiz => titleOfQuizToEdit === quiz.title);
-            new QuizBuilder(elementId, quizToEdit).start();
+            const optionSelect = document.getElementById("optionSelect");
+            if (editQuizSelect.value != optionSelect.value) {
+                const titleOfQuizToEdit = editQuizSelect.value;
+                const quizLocalStorageString = localStorage.getItem("SidneyQuiz:custom")
+                const parsedQuizzes = JSON.parse(quizLocalStorageString);
+                const quizToEdit = parsedQuizzes.find(quiz => titleOfQuizToEdit === quiz.title);
+                new QuizBuilder(elementId, quizToEdit).start();
+            } 
         })
         const confirmDeletionFunction = () => {
             const confirmDeletionAlert = confirm("Are you sure you want to delete the Quiz?");
@@ -150,7 +154,7 @@
             }
         }
         const deleteQuizButton = document.getElementById("deleteQuizButton");
-        deleteQuizButton.addEventListener("click", () => {
+        deleteQuizButton.addEventListener("click", (customQuizzes) => {
             confirmDeletionFunction();
             if (confirmDeletion) {
                 console.log("Yes!")
