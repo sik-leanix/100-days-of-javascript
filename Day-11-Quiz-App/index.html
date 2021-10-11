@@ -139,19 +139,24 @@
         const editQuizButton = document.getElementById("editQuizButton");
 
         editQuizButton.addEventListener("click", () => {
-            if (editQuizSelect.value) {
-                const titleOfQuizToEdit = editQuizSelect.value;
-                const quizLocalStorageString = localStorage.getItem("SidneyQuiz:custom")
-                const parsedQuizzes = JSON.parse(quizLocalStorageString);
-                const quizToEdit = parsedQuizzes.find(quiz => titleOfQuizToEdit === quiz.title);
-                new QuizBuilder(elementId, quizToEdit).start();
-            } 
+            if (!editQuizSelect.value) {
+                return; // Do nothing if no quiz is selected
+            }
+
+            const titleOfQuizToEdit = editQuizSelect.value;
+            const quizLocalStorageString = localStorage.getItem("SidneyQuiz:custom")
+            const parsedQuizzes = JSON.parse(quizLocalStorageString);
+            const quizToEdit = parsedQuizzes.find(quiz => titleOfQuizToEdit === quiz.title);
+            new QuizBuilder(elementId, quizToEdit).start();
         })
         const promptUserToConfirmQuizDeletion = () => {
             return confirm("Are you sure you want to delete the Quiz?");
         }
         const deleteQuizButton = document.getElementById("deleteQuizButton");
         deleteQuizButton.addEventListener("click", () => {
+            if (!editQuizSelect.value) {
+                return; // Do nothing if no quiz is selected
+            }
             const confirmDeletion = promptUserToConfirmQuizDeletion();
             if (confirmDeletion) {
                 const newArrayWithoutSelectedQuiz = getCustomQuizzesFromLocalStorage().filter(customQuiz => customQuiz.title !== editQuizSelect.value);
