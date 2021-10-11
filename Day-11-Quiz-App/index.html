@@ -133,7 +133,7 @@
 
         const editQuizSelect = document.getElementById("editQuizSelect");
         const editQuizButton = document.getElementById("editQuizButton");
-        let confirmDeletion = true;
+
         editQuizButton.addEventListener("click", () => {
             const optionSelect = document.getElementById("optionSelect");
             if (editQuizSelect.value != optionSelect.value) {
@@ -144,23 +144,16 @@
                 new QuizBuilder(elementId, quizToEdit).start();
             } 
         })
-        const confirmDeletionFunction = () => {
-            const confirmDeletionAlert = confirm("Are you sure you want to delete the Quiz?");
-            if(confirmDeletionAlert === true) {
-                console.log("Nooo")
-                return confirmDeletion 
-            } else {
-                return !confirmDeletion
-            }
+        const promptUserToConfirmQuizDeletion = () => {
+            return confirm("Are you sure you want to delete the Quiz?");
         }
         const deleteQuizButton = document.getElementById("deleteQuizButton");
-        deleteQuizButton.addEventListener("click", (customQuizzes) => {
-            confirmDeletionFunction();
+        deleteQuizButton.addEventListener("click", () => {
+            const confirmDeletion = promptUserToConfirmQuizDeletion();
             if (confirmDeletion) {
-                console.log("Yes!")
-                let newArrayWithoutSelectedQuiz = customQuizzes.filter(customQuiz => customQuiz.title != editQuizSelect.value);
-                localStorage.removeItem("SidneyQuiz:custom");
+                const newArrayWithoutSelectedQuiz = getCustomQuizzesFromLocalStorage().filter(customQuiz => customQuiz.title !== editQuizSelect.value);
                 localStorage.setItem("SidneyQuiz:custom", JSON.stringify(newArrayWithoutSelectedQuiz));
+                displayCustomQuizButtonsFromLocalStorage(getCustomQuizzesFromLocalStorage());
             }
         })
 
