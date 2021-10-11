@@ -40,6 +40,7 @@ class QuizBuilder {
         button.onclick = () => this.quit();
         const startEvent = new Event("QuizBuilder:start");
         this.containerElement.dispatchEvent(startEvent);
+        this._registerFormSubmitListener();
         this._registerAddQuestionButtonListener();
         if (this.questionsContainerMaxHeight) {
             this._addOverflowStylesToQuestionContainer();
@@ -55,6 +56,13 @@ class QuizBuilder {
         })
     }
 
+    _registerFormSubmitListener() {
+        const form = this.containerElement.getElementsByTagName("form")[0];
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            this.save();
+        }) 
+    }
 
     _registerAddQuestionButtonListener() {
         this.addQuestionButton.addEventListener("click", () => {
