@@ -31,9 +31,7 @@
             <div id="customQuizButtonListContainer"></div>
             <button class="btn" id="createQuizButton" style="text-align: center">Create Custom Quiz </button>
         <form>
-            <select class="editQuiz" id="editQuizSelect">
-                <option id="optionSelect" disabled selected value> - select quiz - </option>
-            </select>
+            <select class="editQuiz" id="editQuizSelect"></select>
             <input type="button" class="editQuiz" id="editQuizButton" style="text-align: center; display: inline-block" value="Edit">
             <input type="button" class="editQuiz" id="deleteQuizButton" style="text-align: center; display: inline-block" value="Delete">
         </form>
@@ -127,16 +125,17 @@
             quizChooser.style.display = "block";
             customQuizContainer.style.display = "block";
             // TODO: implement dedicated QuizBuilder:save event, as we do not need to rebuild the buttons if no quiz was created.
-            displayCustomQuizButtonsFromLocalStorage(getCustomQuizzesFromLocalStorage()); // reloads custom quiz buttons
+            displayCustomQuizButtons(getCustomQuizzesFromLocalStorage()); // reloads custom quiz buttons
+            displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
         });
-        displayCustomQuizButtonsFromLocalStorage(getCustomQuizzesFromLocalStorage()); // displays custom quiz buttons on initial page load
+        displayCustomQuizButtons(getCustomQuizzesFromLocalStorage()); // displays custom quiz buttons on initial page load
+        displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
 
         const editQuizSelect = document.getElementById("editQuizSelect");
         const editQuizButton = document.getElementById("editQuizButton");
 
         editQuizButton.addEventListener("click", () => {
-            const optionSelect = document.getElementById("optionSelect");
-            if (editQuizSelect.value != optionSelect.value) {
+            if (editQuizSelect.value) {
                 const titleOfQuizToEdit = editQuizSelect.value;
                 const quizLocalStorageString = localStorage.getItem("SidneyQuiz:custom")
                 const parsedQuizzes = JSON.parse(quizLocalStorageString);
@@ -153,21 +152,16 @@
             if (confirmDeletion) {
                 const newArrayWithoutSelectedQuiz = getCustomQuizzesFromLocalStorage().filter(customQuiz => customQuiz.title !== editQuizSelect.value);
                 localStorage.setItem("SidneyQuiz:custom", JSON.stringify(newArrayWithoutSelectedQuiz));
-                displayCustomQuizButtonsFromLocalStorage(getCustomQuizzesFromLocalStorage());
+                displayCustomQuizButtons(getCustomQuizzesFromLocalStorage());
+                displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
             }
         })
 
-        function displayCustomQuizButtonsFromLocalStorage(customQuizzes) {
+        function displayCustomQuizButtons(customQuizzes) {
             const customQuizButtonContainer = document.getElementById("customQuizButtonListContainer");
-            customQuizButtonContainer.textContent = '';
-            const editQuizButton = document.getElementById("editQuizButton");
-            const editQuizSelect = document.getElementById("editQuizSelect");
-            const deleteQuizButton = document.getElementById("deleteQuizButton");
-        
-            if (customQuizzes) {
-                deleteQuizButton.style.display = "inline-block";
-                editQuizButton.style.display = "inline-block";
-                editQuizSelect.style.display = "inline-block";
+            customQuizButtonContainer.textContent = ''; // remove any buttons that were inside the container before.
+
+            if (customQuizzes && customQuizzes.length > 0) {
                 customQuizzes.forEach((customQuiz) => {
                     const button = document.createElement("button");
                     button.className = "btn customQuizButton"
@@ -176,10 +170,24 @@
                     button.addEventListener("click", () => {
                         new Quiz(JSON.stringify(customQuiz.questions), elementId, `${customQuiz.title}`).start()
                     });
+                })
+            }
+        }
 
-                    
+        function displaySelectForEditingAndDeletingCustomQuizzes(customQuizzes) {
+            const editQuizButton = document.getElementById("editQuizButton");
+            const editQuizSelect = document.getElementById("editQuizSelect");
+            const deleteQuizButton = document.getElementById("deleteQuizButton");
+            const firstEmptyOption = '<option disabled selected value> - select quiz - </option>'; // reset single select options
+            editQuizSelect.innerHTML = firstEmptyOption;
+        
+            if (customQuizzes && customQuizzes.length > 0) {
+                deleteQuizButton.style.display = "inline-block";
+                editQuizButton.style.display = "inline-block";
+                editQuizSelect.style.display = "inline-block";
+
+                customQuizzes.forEach((customQuiz) => {
                     editQuizOption = document.createElement("option");
-
                     editQuizSelect.appendChild(editQuizOption);
                     editQuizOption.value = customQuiz.title
                     editQuizOption.textContent = `Quiz: ${customQuiz.title}`;
