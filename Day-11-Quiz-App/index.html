@@ -128,8 +128,8 @@
             displayCustomQuizElements();
         });
 
-        const displayCustomQuizElements = () => {
-            displayCustomQuizButtons(getCustomQuizzesFromLocalStorage()); // displays custom quiz buttons on initial page load
+        function displayCustomQuizElements() {
+            displayCustomQuizButtons(getCustomQuizzesFromLocalStorage());
             displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
         }
 
