@@ -39,15 +39,6 @@ p {
     color: blue;
 }
 
-.removeQuestionButton {
-    display: inline;
-    background-color: red;
-    border-radius: 5px;
-    float: right;
-    color: white;
-
-}
-
 .editQuiz {
     background-color: #ddd;
     font-size: 1.8rem;

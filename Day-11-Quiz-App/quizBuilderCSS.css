@@ -73,3 +73,12 @@
 .removeQuestionButton:first-child {
     display: none;
 } 
+
+.removeQuestionButton {
+    display: inline;
+    background-color: red;
+    border-radius: 5px;
+    float: right;
+    color: white;
+
+}
