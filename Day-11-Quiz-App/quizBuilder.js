@@ -11,7 +11,7 @@ class QuizBuilder {
     _quizBuilderHTMLBody() {
         return `
         <h1>Quiz Builder</h1>
-        <form id="formID">
+        <form>
             <div>
                 <h2 id="quizNameHeader"> Enter a Quiz Name:</h2>
                 <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..." required></input>
@@ -40,19 +40,11 @@ class QuizBuilder {
         button.onclick = () => this.quit();
         const startEvent = new Event("QuizBuilder:start");
         this.containerElement.dispatchEvent(startEvent);
-        this._registerFormSubmitListener();
         this._registerAddQuestionButtonListener();
         if (this.questionsContainerMaxHeight) {
             this._addOverflowStylesToQuestionContainer();
         }
         this._registerSubmitFromSelect();
-        const form = document.getElementById("formID");
-        // Disable enter to fix deleting question bug
-        form.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-              event.preventDefault();
-            }
-        });
     }
 
     _registerSubmitFromSelect() {
@@ -63,13 +55,6 @@ class QuizBuilder {
         })
     }
 
-    _registerFormSubmitListener() {
-        const form = this.containerElement.getElementsByTagName("form")[0];
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            this.save();
-        }) 
-    }
 
     _registerAddQuestionButtonListener() {
         this.addQuestionButton.addEventListener("click", () => {
