@@ -38,3 +38,43 @@ p {
     font-size: 1.25rem;
     color: blue;
 }
+
+.removeQuestionButton {
+    display: inline;
+    background-color: red;
+    border-radius: 5px;
+    float: right;
+    color: white;
+
+}
+
+.editQuiz {
+    background-color: #ddd;
+    font-size: 1.8rem;
+    color: black;
+    border: 1px solid #3399ff;
+    border-radius: 5px;
+    margin: 7px 0;
+    padding: 1rem;
+    outline: none;
+}
+#deleteQuizButton {
+    padding-left: 7px;
+    width: 11%;
+    cursor: pointer;
+    background-color: red;
+    border-color: red;
+}
+
+.customQuizButton {
+    text-align: center
+}
+
+#editQuizSelect {
+    width: 78%;
+}
+
+#editQuizButton {
+    width: 10%;
+    cursor: pointer;
+}
