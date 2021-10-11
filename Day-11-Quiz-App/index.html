@@ -125,11 +125,15 @@
             quizChooser.style.display = "block";
             customQuizContainer.style.display = "block";
             // TODO: implement dedicated QuizBuilder:save event, as we do not need to rebuild the buttons if no quiz was created.
-            displayCustomQuizButtons(getCustomQuizzesFromLocalStorage()); // reloads custom quiz buttons
-            displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
+            displayCustomQuizElements();
         });
-        displayCustomQuizButtons(getCustomQuizzesFromLocalStorage()); // displays custom quiz buttons on initial page load
-        displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
+
+        const displayCustomQuizElements = () => {
+            displayCustomQuizButtons(getCustomQuizzesFromLocalStorage()); // displays custom quiz buttons on initial page load
+            displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
+        }
+
+        displayCustomQuizElements();
 
         const editQuizSelect = document.getElementById("editQuizSelect");
         const editQuizButton = document.getElementById("editQuizButton");
@@ -152,8 +156,7 @@
             if (confirmDeletion) {
                 const newArrayWithoutSelectedQuiz = getCustomQuizzesFromLocalStorage().filter(customQuiz => customQuiz.title !== editQuizSelect.value);
                 localStorage.setItem("SidneyQuiz:custom", JSON.stringify(newArrayWithoutSelectedQuiz));
-                displayCustomQuizButtons(getCustomQuizzesFromLocalStorage());
-                displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
+                displayCustomQuizElements();
             }
         })
 
