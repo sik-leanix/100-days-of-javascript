@@ -1,5 +1,7 @@
-.quizBuilderContainer {
+.quiz-box {
     width: 600px;
+}
+.quizBuilderContainer {
     padding: 0 20px 20px 20px;
     background-color: #eee;
     border: 3px solid rgb(1, 22, 209);
@@ -56,10 +58,10 @@
     color: #fff;
     padding: 10px 0;
     width: 50%;
-    margin: 8px 0 8px 0;
     border-radius: 3px;
     border: none;
 }
+
 
 .error {
     display: none;

@@ -28,7 +28,13 @@
             <div id="customQuizContainer">
                 <h2>Custom Quizzes (Work in progress)</h2>
                 <hr>
-                <button class="btn" id="createQuizButton" style="text-align: center">Create Custom Quiz </button>
+                <div id="customQuizButtonListContainer"></div>
+                <button class="btn" id="createQuizButton" style="text-align: center">Create Custom Quiz</button>
+                <div>
+                    <select class="editQuiz" id="editQuizSelect"></select>
+                    <input type="button" class="editQuiz" id="editQuizButton" style="text-align: center; display: inline-block" value="Edit">
+                    <input type="button" class="editQuiz" id="deleteQuizButton" style="text-align: center; display: inline-block" value="Delete">
+                </div>
             </div>
             <div id="sik-quiz"></div>
             <footer>
@@ -59,7 +65,7 @@
                 "Apart from <b> tag, what other tag makes text bold ?", ["<fat>", "<black>", "<strong>", "<emp>"], "<strong>"
             )
         ];
-
+        
         const sportQuestions = [
         new Question(
                 "How many times has Roger Federer won Wimbledon playing singles?", ["7", "10", "8", "5"], "8"
@@ -113,13 +119,98 @@
             customQuizContainer.style.display = "none";
 
         });
+
         quizElement.addEventListener("QuizBuilder:quit", () => {
+            // TODO: pass data of quiz that was just saved along in event, so that we only need to add one more button for the new quiz instead of rebuilding all buttons.
             quizChooser.style.display = "block";
             customQuizContainer.style.display = "block";
+            // TODO: implement dedicated QuizBuilder:save event, as we do not need to rebuild the buttons if no quiz was created.
+            displayCustomQuizElements();
         });
 
+        function displayCustomQuizElements() {
+            displayCustomQuizButtons(getCustomQuizzesFromLocalStorage());
+            displaySelectForEditingAndDeletingCustomQuizzes(getCustomQuizzesFromLocalStorage());
+        }
 
+        displayCustomQuizElements();
+
+        const editQuizSelect = document.getElementById("editQuizSelect");
+        const editQuizButton = document.getElementById("editQuizButton");
+
+        editQuizButton.addEventListener("click", () => {
+            if (!editQuizSelect.value) {
+                return; // Do nothing if no quiz is selected
+            }
+
+            const titleOfQuizToEdit = editQuizSelect.value;
+            const quizLocalStorageString = localStorage.getItem("SidneyQuiz:custom")
+            const parsedQuizzes = JSON.parse(quizLocalStorageString);
+            const quizToEdit = parsedQuizzes.find(quiz => titleOfQuizToEdit === quiz.title);
+            new QuizBuilder(elementId, quizToEdit).start();
+        })
+        const promptUserToConfirmQuizDeletion = () => {
+            return confirm("Are you sure you want to delete the Quiz?");
+        }
+        const deleteQuizButton = document.getElementById("deleteQuizButton");
+        deleteQuizButton.addEventListener("click", () => {
+            if (!editQuizSelect.value) {
+                return; // Do nothing if no quiz is selected
+            }
+            const confirmDeletion = promptUserToConfirmQuizDeletion();
+            if (confirmDeletion) {
+                const newArrayWithoutSelectedQuiz = getCustomQuizzesFromLocalStorage().filter(customQuiz => customQuiz.title !== editQuizSelect.value);
+                localStorage.setItem("SidneyQuiz:custom", JSON.stringify(newArrayWithoutSelectedQuiz));
+                displayCustomQuizElements();
+            }
+        })
+
+        function displayCustomQuizButtons(customQuizzes) {
+            const customQuizButtonContainer = document.getElementById("customQuizButtonListContainer");
+            customQuizButtonContainer.textContent = ''; // remove any buttons that were inside the container before.
+
+            if (customQuizzes && customQuizzes.length > 0) {
+                customQuizzes.forEach((customQuiz) => {
+                    const button = document.createElement("button");
+                    button.className = "btn customQuizButton"
+                    customQuizButtonContainer.appendChild(button)
+                    button.textContent = `Quiz: ${customQuiz.title}`;
+                    button.addEventListener("click", () => {
+                        new Quiz(JSON.stringify(customQuiz.questions), elementId, `${customQuiz.title}`).start()
+                    });
+                })
+            }
+        }
+
+        function displaySelectForEditingAndDeletingCustomQuizzes(customQuizzes) {
+            const editQuizButton = document.getElementById("editQuizButton");
+            const editQuizSelect = document.getElementById("editQuizSelect");
+            const deleteQuizButton = document.getElementById("deleteQuizButton");
+            const firstEmptyOption = '<option disabled selected value> - select quiz - </option>'; // reset single select options
+            editQuizSelect.innerHTML = firstEmptyOption;
         
+            if (customQuizzes && customQuizzes.length > 0) {
+                deleteQuizButton.style.display = "inline-block";
+                editQuizButton.style.display = "inline-block";
+                editQuizSelect.style.display = "inline-block";
+
+                customQuizzes.forEach((customQuiz) => {
+                    editQuizOption = document.createElement("option");
+                    editQuizSelect.appendChild(editQuizOption);
+                    editQuizOption.value = customQuiz.title
+                    editQuizOption.textContent = `Quiz: ${customQuiz.title}`;
+                })      
+            } else {
+                editQuizSelect.style.display = "none";
+                deleteQuizButton.style.display = "none";
+                editQuizButton.style.display = "none";
+            }
+        }
+
+        function getCustomQuizzesFromLocalStorage() {
+            const customQuizzesString = localStorage.getItem("SidneyQuiz:custom");
+            return customQuizzesString ? JSON.parse(customQuizzesString) : undefined;
+        }
     </script>
 </body>
 

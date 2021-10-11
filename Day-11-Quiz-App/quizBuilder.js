@@ -2,9 +2,10 @@ class QuizBuilder {
     _addQuestionButtonId = "newQuestionButton";
     _saveQuizButtonId = "saveQuizButton";
     allQuestionsAreValid = true;
-    constructor(entryElementId, questionsContainerMaxHeight) {
+    constructor(entryElementId, quizDataToEdit, questionsContainerMaxHeight) {
         this.containerElement = document.getElementById(entryElementId)
         this.questionsContainerMaxHeight = questionsContainerMaxHeight;
+        this.quizDataToEdit = quizDataToEdit;
     }
 
     _quizBuilderHTMLBody() {
@@ -15,7 +16,6 @@ class QuizBuilder {
                 <h2 id="quizNameHeader"> Enter a Quiz Name:</h2>
                 <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..." required></input>
             </div>
-            <hr>
             <h2>Questions</h2>
             <hr>
             <div id="questionsContainer">
@@ -45,6 +45,15 @@ class QuizBuilder {
         if (this.questionsContainerMaxHeight) {
             this._addOverflowStylesToQuestionContainer();
         }
+        this._registerSubmitFromSelect();
+    }
+
+    _registerSubmitFromSelect() {
+        const button = document.getElementById("editQuizButton");
+        this.editQuizSelect = document.getElementById("editQuizSelect")
+        button.addEventListener("submit", (event) => {
+            event.preventDefault();
+        })
     }
 
     _registerFormSubmitListener() {
@@ -62,7 +71,6 @@ class QuizBuilder {
     }
 
     save() {
-        // TODO: implement guard that prevents saving if not all questions are valid.
         if (this.allQuestionsAreValid) { 
             const questions = this._getQuestionsArrayFromInputValues();
             const quizTitle = document.getElementById('quizTitle').value;
@@ -70,15 +78,31 @@ class QuizBuilder {
                 title: quizTitle,
                 questions,
             };
-            console.log(quiz);
-            alert("success");
+            const existingQuizzesString = localStorage.getItem('SidneyQuiz:custom');
+            if (existingQuizzesString) {
+                const existingQuizzes = JSON.parse(existingQuizzesString);
+                if (this.quizDataToEdit) {
+                    localStorage.setItem('SidneyQuiz:custom', JSON.stringify(existingQuizzes.map(existingQuiz => {
+                        if (existingQuiz.title === this.quizDataToEdit.title) {
+                            existingQuiz.questions = questions
+                        }
+                        return existingQuiz;
+                    })));
+                } else {
+                    localStorage.setItem('SidneyQuiz:custom', JSON.stringify(existingQuizzes.concat(quiz)));
+                }
+            } else {
+                localStorage.setItem('SidneyQuiz:custom', JSON.stringify([quiz]));
+            }
+            this.quit()
         }
         
     }
+
     addQuestion() {
-        const newHR = document.createElement("hr")
+        const newHR = document.createElement("hr");
         this.questionsContainer.appendChild(newHR);
-        this._createInputElements()
+        this._addInputElementsForOneQuestion()
     }
 
     quit() {
@@ -89,6 +113,19 @@ class QuizBuilder {
     }
 
     _createInputElements() {
+        if (this.quizDataToEdit) {
+            const quizTitle = document.getElementById("quizTitle");
+            quizTitle.disabled = true
+            quizTitle.value = this.quizDataToEdit.title;
+            this.quizDataToEdit.questions.forEach((question) => {
+                this._addInputElementsForOneQuestion(question);
+            })
+        } else {
+            this._addInputElementsForOneQuestion();
+        }
+    }
+
+    _addInputElementsForOneQuestion(questionData) {
         this.questionsContainer = document.getElementById("questionsContainer");
 
         const questionText = document.createElement("input");
@@ -98,6 +135,12 @@ class QuizBuilder {
         questionText.setAttribute("required", "");
         choices.setAttribute("required", "");  
         answer.setAttribute("required", "");  
+
+        if (questionData) {
+            choices.value = questionData.choices;
+            answer.value = questionData.answer;
+            questionText.value = questionData.text;
+        }
 
         this._registerInputValidation(choices, answer, error)
         
@@ -113,7 +156,7 @@ class QuizBuilder {
         this.questionsContainer.appendChild(answerHeader);
         this.questionsContainer.appendChild(answer);
         this.questionsContainer.appendChild(error);
-
+        
         questionTextHeader.textContent = "Type in a question:";
         choicesHeader.textContent = "Type in the choices (comma separated): ";
         answerHeader.textContent = "Type in an answer:";
@@ -149,6 +192,7 @@ class QuizBuilder {
                 this.allQuestionsAreValid = false;
                 this.saveButton.disabled = true;
                 answerElement.style.borderColor = "red";
+                answerElement.style.borderRadius = "5px"
             }
         }
         answerElement.addEventListener('input', validateAnswer);
