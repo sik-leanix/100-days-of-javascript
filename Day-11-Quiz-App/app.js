@@ -20,7 +20,7 @@ class Quiz {
         return convertJSONtoObject
     }
 
-    userHasAlreadyGuessedForCurrentQuestion = false;
+    _userHasAlreadyGuessedForCurrentQuestion = false;
 
     constructor(questions, entryElementId = 'sik-quiz', quizTitle = 'Quiz App') {
         if (typeof questions === 'string') {
@@ -31,28 +31,28 @@ class Quiz {
         this.score = 0;
         this.questionIndex = 0;
         this.quizTitle = quizTitle;
-        this.containerElement = document.getElementById(entryElementId);
+        this._containerElement = document.getElementById(entryElementId);
     
     }
 
     start() {
-        this.containerElement.classList.add("sidneyQuizContainer");
-        this.containerElement.innerHTML = this._quizHtmlBody();
+        this._containerElement.classList.add("sidneyQuizContainer");
+        this._containerElement.innerHTML = this._quizHtmlBody();
         this._displayQuestion();
         this._startCountdown();
         const button = document.getElementById('quitQuizButton');
         button.onclick = () => this.quit();
         const startEvent = new Event("SidneyQuiz:start");
-        this.containerElement.dispatchEvent(startEvent);
+        this._containerElement.dispatchEvent(startEvent);
     }
 
     quit() {
-        this.containerElement.classList.remove("sidneyQuizContainer");
-        this.containerElement.textContent = '';
+        this._containerElement.classList.remove("sidneyQuizContainer");
+        this._containerElement.textContent = '';
         this.score = 0;
         this.questionIndex = 0;
         const quitEvent = new Event("SidneyQuiz:quit");
-        this.containerElement.dispatchEvent(quitEvent);
+        this._containerElement.dispatchEvent(quitEvent);
     }
 
     guess(answer) {
@@ -67,7 +67,7 @@ class Quiz {
     _reset() {
         this.score = 0;
         this.questionIndex = 0;
-        this.userHasAlreadyGuessedForCurrentQuestion = false;
+        this._userHasAlreadyGuessedForCurrentQuestion = false;
         this.start();
     }
 
@@ -128,15 +128,15 @@ class Quiz {
     _registerSelectGuessListener(buttonElement, guess) {
         buttonElement.style.backgroundColor = "#ddd"; // reset button background as it might have been changed on the previous guess
         buttonElement.onclick = () => {
-            if (this.userHasAlreadyGuessedForCurrentQuestion) {
+            if (this._userHasAlreadyGuessedForCurrentQuestion) {
                 return;
             }
-            this.userHasAlreadyGuessedForCurrentQuestion = true;
+            this._userHasAlreadyGuessedForCurrentQuestion = true;
             const isCorrect = this.guess(guess);
             buttonElement.style.backgroundColor = isCorrect ? "green" : "red";
             setTimeout(() => {
                 this._displayQuestion();
-                this.userHasAlreadyGuessedForCurrentQuestion = false;
+                this._userHasAlreadyGuessedForCurrentQuestion = false;
             }, 1500);
         }
     }
@@ -151,7 +151,7 @@ class Quiz {
             <hr>
           </div>
         `;
-        this.containerElement.innerHTML = quizEndHTML;
+        this._containerElement.innerHTML = quizEndHTML;
         const restartButton = document.getElementById("restartQuizButton");
         const quitButton = document.getElementById("quitQuizButtonEnd");
         quitButton.addEventListener("click", () => this.quit());
