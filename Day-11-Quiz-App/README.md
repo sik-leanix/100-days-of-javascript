@@ -67,19 +67,26 @@ In the example you can see there are two questions with four different choices. 
 
 * `Quiz`
   * [`new Quiz(questions ,quizElementId, quizName)`](#new)
-  * [`.guess(answer)`](#guess-answer)
-  * [`.start()`](#start)
-  * [`.quit()`](#quit)
-  * [`.getQuestionsFromJson(jsonString)`](#check-JSON)
-
-
+  * [`Quiz.guess(answer)`](#guess-answer)
+  * [`Quiz.start()`](#start)
+  * [`Quiz.quit()`](#quit)
+  * [`Quiz.getQuestionsFromJson(jsonString)`](#check-JSON)
+  * [`Quiz.score`](#score)
+  * [`Quiz.questionIndex`](#questionIndex)
+  * [`Quiz.questions`](#questions)
+  * [`Quiz.quizTitle`](#quizTitle)
 * `Question`
   * [`.new Question(text, choices, answer)`](#new-Question)
-  * [`.isCorrectAnswer(choice)`](#correctAnswer)
+  * [`Question.isCorrectAnswer(choice)`](#correctAnswer)
+* `QuizBuilder`
+  * [`.new Question(text, choices, answer)`](#new-Question)
 
 
 * * *
 
+## Quiz
+
+*** 
 <a name="new"></a>
 #### `new Quiz(questions, quizElementId, quizName)`
 
@@ -106,14 +113,14 @@ const questions = `[
 
 | Param | Type | Description |
 | --- | --- | --- |
-| questions | `Question[] | JSON string` | Input for definded questions in an array |
+| questions | `Question[]` or JSON string | Input for definded questions in an array |
 | quizElementId | `String` | ID of the element to mount the quiz into |
 | quizName | `String` | Title of the quiz. Displayed on top |
 
 * * *
 
 <a name="guess-answer"></a>
-#### `guess(answer)`
+#### `Quiz.guess(answer)`
 
 Use to select a choice of the active question.
 
@@ -151,6 +158,41 @@ Returns an array of `Question` objects that were parsed to the JSON string.
 
 * * *
 
+<a name="score"></a>
+#### `Quiz.score`
+**Type** `Number`
+
+The `score` property is a number, which starts at 0 and counts up by 1, if the user answers a question correctly. If the quiz is completed the user will see the achieved score. 
+
+*** 
+
+<a name="questionIndex"></a>
+#### `Quiz.questionIndex`
+**Type** `Number`
+
+The `questionIndex` property is a number, which also starts at 0. Every time the user completes a question no matter if the user is right or wrong, the `questionIndex` increases by one. In the end, the user will see the amount of questions the user answered. 
+
+*** 
+
+<a name="questions"></a>
+#### `Quiz.questions`
+**Type** `JSON-String || Object[]`
+
+The `questions` property contains all the questions of the quiz that the were provided in the `constructor`.
+
+*** 
+
+<a name="quizTitle"></a>
+#### `Quiz.quizTitle`
+**Type** `String`
+
+The `quizTitle` property contains the title of the quiz as a string. The user has the opportunity to provide a `quizTitle`. If no title is given in, the default `quizTitle` is set to "Quiz App". 
+
+*** 
+## Question 
+
+*** 
+
 <a name="new-Question"></a>
 #### `new Question(text, choices, answer)`
 
@@ -163,6 +205,9 @@ Returns an array of `Question` objects that were parsed to the JSON string.
 *** 
 
 <a name="correctAnswer"></a>
-#### `.isCorrectAnswer(choice)`
+#### `Question.isCorrectAnswer(choice)`
 
 Returns if the given choice is the correct answer.
+
+*** 
+
