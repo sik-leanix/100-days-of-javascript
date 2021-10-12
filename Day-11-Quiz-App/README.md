@@ -176,7 +176,7 @@ The `questionIndex` property is a number, which also starts at 0. Every time the
 
 <a name="questions"></a>
 #### `Quiz.questions`
-**Type** `JSON-String || Object[]`
+**Type** `Question[]`
 
 The `questions` property contains all the questions of the quiz that the were provided in the `constructor`.
 
