@@ -152,7 +152,7 @@ Returns an array of `Question` objects that were parsed to the JSON string.
 * * *
 
 <a name="new-Question"></a>
-### `new Question(text, choices, answer)`
+#### `new Question(text, choices, answer)`
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -163,6 +163,6 @@ Returns an array of `Question` objects that were parsed to the JSON string.
 *** 
 
 <a name="correctAnswer"></a>
-### `.isCorrectAnswer(choice)`
+#### `.isCorrectAnswer(choice)`
 
 Returns if the given choice is the correct answer.
