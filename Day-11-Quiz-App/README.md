@@ -149,7 +149,7 @@ Dispatches the `SidneyQuiz:quit` event on the quiz container for you to react to
 * * *
 
 <a name="check-JSON"></a>
-#### `getQuestionsFromJson(jsonString)`
+#### `Quiz.getQuestionsFromJson(jsonString)`
 
 Checks if the JSON String contains all the requirements (Text, choices, answer).
 If not it throws an error.
@@ -170,7 +170,7 @@ The `score` property is a number, which starts at 0 and counts up by 1, if the u
 #### `Quiz.questionIndex`
 **Type** `Number`
 
-The `questionIndex` property is a number, which also starts at 0. Every time the user completes a question no matter if the user is right or wrong, the `questionIndex` increases by one. In the end, the user will see the amount of questions the user answered. 
+The `questionIndex` property is a number, which also starts at 0. Every time the user completes a question no matter if the user is right or wrong, the `questionIndex` increases by one.
 
 *** 
 
@@ -186,7 +186,7 @@ The `questions` property contains all the questions of the quiz that the were pr
 #### `Quiz.quizTitle`
 **Type** `String`
 
-The `quizTitle` property contains the title of the quiz as a string. The user has the opportunity to provide a `quizTitle`. If no title is given in, the default `quizTitle` is set to "Quiz App". 
+The `quizTitle` property contains the title of the quiz as a string. The user has the opportunity to provide a `quizTitle` in the `constructor`. If no title is given, the default value is "Quiz App". 
 
 *** 
 ## Question 
@@ -211,3 +211,13 @@ Returns if the given choice is the correct answer.
 
 *** 
 
+### QuizBuilder
+
+***
+
+<a name=""></a>
+#### ``
+
+r
+
+*** 
