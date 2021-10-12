@@ -52,10 +52,7 @@ class QuizBuilder {
         if (this._allQuestionsAreValid) { 
             const questions = this._getQuestionsArrayFromInputValues();
             const quizTitle = document.getElementById('quizTitle').value;
-            const quiz = {
-                title: quizTitle,
-                questions,
-            };
+            const quiz = new QuizData(quizTitle, questions);
             const existingQuizzesString = localStorage.getItem('SidneyQuiz:custom');
             if (existingQuizzesString) {
                 const existingQuizzes = JSON.parse(existingQuizzesString);
@@ -242,5 +239,12 @@ class QuizBuilder {
             this._containerElement.style.setProperty('--questions-max-height', this.questionsContainerMaxHeight);
             this._questionsContainer.classList.add("overflowScroll");
         }
+    }
+}
+
+class QuizData {
+    constructor(title, questions) {
+        this.title = title;
+        this.questions = questions;
     }
 }
