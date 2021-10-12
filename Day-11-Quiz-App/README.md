@@ -79,7 +79,12 @@ In the example you can see there are two questions with four different choices. 
   * [`.new Question(text, choices, answer)`](#new-Question)
   * [`Question.isCorrectAnswer(choice)`](#correctAnswer)
 * `QuizBuilder`
-  * [`.new Question(text, choices, answer)`](#new-Question)
+  * [`new QuizBuilder(entryElementId, quizDataToEdit, questionsContainerMaxHeight)`](#newQuizBuilder)
+  * [`QuizBuilder.start`](#quizBuilderStart)
+  * [`QuizBuilder.save`](#quizBuilderSave)
+  * [`QuizBuilder.quit`](#quizBuilderQuit)
+  * [`QuizBuilder.quizDataToEdit`](#quizBuilderEdit)
+  * [`QuizBuilder.questionsContainerMaxHeight`](#quizBuilderHeight)
 
 
 * * *
@@ -211,13 +216,70 @@ Returns if the given choice is the correct answer.
 
 *** 
 
-### QuizBuilder
+## QuizBuilder
 
 ***
 
-<a name=""></a>
-#### ``
+<a name="newQuizBuilder"></a>
+#### `new QuizBuilder(entryElementId, quizDataToEdit, questionsContainerMaxHeight)`
 
-r
+Initialize the QuizBuilder with the following Parameters.
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entryElementId | `string` | ID of the element to mount the `QuizBuilder` into. |
+| quizDataToEdit | `QuizData` or `undefined` | Contains all the necessary data to edit an existing custom quiz. |
+| questionsContainerMaxHeight | `String` or `undefined` | If provided, the element around the question inputs will stop growing at the provided CSS height and scroll instead. |
+
+*** 
+
+<a name="quizBuilderStart"></a>
+#### `QuizBuilder.start()`
+
+Start QuizBuilder. At this point the QuizBuilder HTML will be inserted into the provived element.
+
+Dispatches the `QuizBuilder:start` event on the element. 
+
+*** 
+
+<a name="quizBuilderSave"></a>
+#### `QuizBuilder.save()`
+
+Saves the created Quiz in your localStorage under `QuizBuilder:costum`.
+It also dispatches the `QuizBuilder:quit` event.
+
+*** 
+
+<a name="quizBuilderQuit"></a>
+#### `QuizBuilder.quit()`
+
+Quits the QuizBuilder without saving.
+
+Dispatches the `QuizBuilder:quit` event on the quizBuilder container for you to react to from the outside.
+
+*** 
+
+<a name="quizBuilderEdit"></a>
+#### `QuizBuilder.quizDataToEdit`
+**Type** `QuizData` | `undefined`
+
+Is only defined when it was provided in the class `constructor` when wanting to edit an existing custom quiz.
+
+The `quizDataToEdit` property is an instance of `QuizData`:
+
+`new QuizData(title, questions)`
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | `String` | Title of the quiz |
+| questions | `Question[]` | Questions of the quiz |
+
+*** 
+
+<a name="quizBuilderHeight"></a>
+#### `QuizBuilder.questionsContainerMaxHeight`
+**Type** `String`
+
+If you want the container of the question inputs to stop growing after a certain height and scroll instead, then provide this parameter in the class `constructor`.One example can be `"100vh"`.
 
 *** 
