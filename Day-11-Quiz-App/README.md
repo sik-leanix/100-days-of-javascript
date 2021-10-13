@@ -67,19 +67,31 @@ In the example you can see there are two questions with four different choices. 
 
 * `Quiz`
   * [`new Quiz(questions ,quizElementId, quizName)`](#new)
-  * [`.guess(answer)`](#guess-answer)
-  * [`.start()`](#start)
-  * [`.quit()`](#quit)
-  * [`.getQuestionsFromJson(jsonString)`](#check-JSON)
-
-
+  * [`Quiz.guess(answer)`](#guess-answer)
+  * [`Quiz.start()`](#start)
+  * [`Quiz.quit()`](#quit)
+  * [`Quiz.getQuestionsFromJson(jsonString)`](#check-JSON)
+  * [`Quiz.score`](#score)
+  * [`Quiz.questionIndex`](#questionIndex)
+  * [`Quiz.questions`](#questions)
+  * [`Quiz.quizTitle`](#quizTitle)
 * `Question`
   * [`.new Question(text, choices, answer)`](#new-Question)
-  * [`.isCorrectAnswer(choice)`](#correctAnswer)
+  * [`Question.isCorrectAnswer(choice)`](#correctAnswer)
+* `QuizBuilder`
+  * [`new QuizBuilder(entryElementId, quizDataToEdit, questionsContainerMaxHeight)`](#newQuizBuilder)
+  * [`QuizBuilder.start`](#quizBuilderStart)
+  * [`QuizBuilder.save`](#quizBuilderSave)
+  * [`QuizBuilder.quit`](#quizBuilderQuit)
+  * [`QuizBuilder.quizDataToEdit`](#quizBuilderEdit)
+  * [`QuizBuilder.questionsContainerMaxHeight`](#quizBuilderHeight)
 
 
 * * *
 
+## Quiz
+
+*** 
 <a name="new"></a>
 #### `new Quiz(questions, quizElementId, quizName)`
 
@@ -106,14 +118,14 @@ const questions = `[
 
 | Param | Type | Description |
 | --- | --- | --- |
-| questions | `Question[] | JSON string` | Input for definded questions in an array |
+| questions | `Question[]` or JSON string | Input for definded questions in an array |
 | quizElementId | `String` | ID of the element to mount the quiz into |
 | quizName | `String` | Title of the quiz. Displayed on top |
 
 * * *
 
 <a name="guess-answer"></a>
-#### `guess(answer)`
+#### `Quiz.guess(answer)`
 
 Use to select a choice of the active question.
 
@@ -142,7 +154,7 @@ Dispatches the `SidneyQuiz:quit` event on the quiz container for you to react to
 * * *
 
 <a name="check-JSON"></a>
-#### `getQuestionsFromJson(jsonString)`
+#### `Quiz.getQuestionsFromJson(jsonString)`
 
 Checks if the JSON String contains all the requirements (Text, choices, answer).
 If not it throws an error.
@@ -151,8 +163,43 @@ Returns an array of `Question` objects that were parsed to the JSON string.
 
 * * *
 
+<a name="score"></a>
+#### `Quiz.score`
+**Type** `Number`
+
+The `score` property is a number, which starts at 0 and counts up by 1, if the user answers a question correctly. If the quiz is completed the user will see the achieved score. 
+
+*** 
+
+<a name="questionIndex"></a>
+#### `Quiz.questionIndex`
+**Type** `Number`
+
+The `questionIndex` property is a number, which also starts at 0. Every time the user completes a question no matter if the user is right or wrong, the `questionIndex` increases by one.
+
+*** 
+
+<a name="questions"></a>
+#### `Quiz.questions`
+**Type** `Question[]`
+
+The `questions` property contains all the questions of the quiz that the were provided in the `constructor`.
+
+*** 
+
+<a name="quizTitle"></a>
+#### `Quiz.quizTitle`
+**Type** `String`
+
+The `quizTitle` property contains the title of the quiz as a string. The user has the opportunity to provide a `quizTitle` in the `constructor`. If no title is given, the default value is "Quiz App". 
+
+*** 
+## Question 
+
+*** 
+
 <a name="new-Question"></a>
-### `new Question(text, choices, answer)`
+#### `new Question(text, choices, answer)`
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -163,6 +210,76 @@ Returns an array of `Question` objects that were parsed to the JSON string.
 *** 
 
 <a name="correctAnswer"></a>
-### `.isCorrectAnswer(choice)`
+#### `Question.isCorrectAnswer(choice)`
 
 Returns if the given choice is the correct answer.
+
+*** 
+
+## QuizBuilder
+
+***
+
+<a name="newQuizBuilder"></a>
+#### `new QuizBuilder(entryElementId, quizDataToEdit, questionsContainerMaxHeight)`
+
+Initialize the QuizBuilder with the following Parameters.
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entryElementId | `string` | ID of the element to mount the `QuizBuilder` into. |
+| quizDataToEdit | `QuizData` or `undefined` | Contains all the necessary data to edit an existing custom quiz. |
+| questionsContainerMaxHeight | `String` or `undefined` | If provided, the element around the question inputs will stop growing at the provided CSS height and scroll instead. |
+
+*** 
+
+<a name="quizBuilderStart"></a>
+#### `QuizBuilder.start()`
+
+Start QuizBuilder. At this point the QuizBuilder HTML will be inserted into the provived element.
+
+Dispatches the `QuizBuilder:start` event on the element. 
+
+*** 
+
+<a name="quizBuilderSave"></a>
+#### `QuizBuilder.save()`
+
+Saves the created Quiz in your localStorage under `QuizBuilder:costum`.
+It also dispatches the `QuizBuilder:quit` event.
+
+*** 
+
+<a name="quizBuilderQuit"></a>
+#### `QuizBuilder.quit()`
+
+Quits the QuizBuilder without saving.
+
+Dispatches the `QuizBuilder:quit` event on the quizBuilder container for you to react to from the outside.
+
+*** 
+
+<a name="quizBuilderEdit"></a>
+#### `QuizBuilder.quizDataToEdit`
+**Type** `QuizData` | `undefined`
+
+Is only defined when it was provided in the class `constructor` when wanting to edit an existing custom quiz.
+
+The `quizDataToEdit` property is an instance of `QuizData`:
+
+`new QuizData(title, questions)`
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | `String` | Title of the quiz |
+| questions | `Question[]` | Questions of the quiz |
+
+*** 
+
+<a name="quizBuilderHeight"></a>
+#### `QuizBuilder.questionsContainerMaxHeight`
+**Type** `String`
+
+If you want the container of the question inputs to stop growing after a certain height and scroll instead, then provide this parameter in the class `constructor`.One example can be `"100vh"`.
+
+*** 

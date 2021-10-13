@@ -1,9 +1,9 @@
 class QuizBuilder {
     _addQuestionButtonId = "newQuestionButton";
     _saveQuizButtonId = "saveQuizButton";
-    allQuestionsAreValid = true;
+    _allQuestionsAreValid = true;
     constructor(entryElementId, quizDataToEdit, questionsContainerMaxHeight) {
-        this.containerElement = document.getElementById(entryElementId)
+        this._containerElement = document.getElementById(entryElementId)
         this.questionsContainerMaxHeight = questionsContainerMaxHeight;
         this.quizDataToEdit = quizDataToEdit;
     }
@@ -31,15 +31,15 @@ class QuizBuilder {
     }
 
     start() {
-        this.containerElement.classList.add("quizBuilderContainer");
-        this.containerElement.innerHTML = this._quizBuilderHTMLBody();
-        this.addQuestionButton = document.getElementById(this._addQuestionButtonId);
-        this.saveButton = document.getElementById(this._saveQuizButtonId);
+        this._containerElement.classList.add("quizBuilderContainer");
+        this._containerElement.innerHTML = this._quizBuilderHTMLBody();
+        this._addQuestionButton = document.getElementById(this._addQuestionButtonId);
+        this._saveButton = document.getElementById(this._saveQuizButtonId);
         this._createInputElements();
         const button = document.getElementById('quizBuilderQuit');
         button.onclick = () => this.quit();
         const startEvent = new Event("QuizBuilder:start");
-        this.containerElement.dispatchEvent(startEvent);
+        this._containerElement.dispatchEvent(startEvent);
         this._registerFormSubmitListener();
         this._registerAddQuestionButtonListener();
         if (this.questionsContainerMaxHeight) {
@@ -48,36 +48,11 @@ class QuizBuilder {
         this._registerSubmitFromSelect();
     }
 
-    _registerSubmitFromSelect() {
-        const button = document.getElementById("editQuizButton");
-        this.editQuizSelect = document.getElementById("editQuizSelect")
-        button.addEventListener("submit", (event) => {
-            event.preventDefault();
-        })
-    }
-
-    _registerFormSubmitListener() {
-        const form = this.containerElement.getElementsByTagName("form")[0];
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            this.save();
-        }) 
-    }
-
-    _registerAddQuestionButtonListener() {
-        this.addQuestionButton.addEventListener("click", () => {
-            this.addQuestion();
-        })
-    }
-
     save() {
-        if (this.allQuestionsAreValid) { 
+        if (this._allQuestionsAreValid) { 
             const questions = this._getQuestionsArrayFromInputValues();
             const quizTitle = document.getElementById('quizTitle').value;
-            const quiz = {
-                title: quizTitle,
-                questions,
-            };
+            const quiz = new QuizData(quizTitle, questions);
             const existingQuizzesString = localStorage.getItem('SidneyQuiz:custom');
             if (existingQuizzesString) {
                 const existingQuizzes = JSON.parse(existingQuizzesString);
@@ -96,20 +71,41 @@ class QuizBuilder {
             }
             this.quit()
         }
-        
-    }
-
-    addQuestion() {
-        const newHR = document.createElement("hr");
-        this.questionsContainer.appendChild(newHR);
-        this._addInputElementsForOneQuestion()
     }
 
     quit() {
-        this.containerElement.classList.remove("quizBuilderContainer");
-        this.containerElement.textContent = '';
+        this._containerElement.classList.remove("quizBuilderContainer");
+        this._containerElement.textContent = '';
         const quitEvent = new Event("QuizBuilder:quit");
-        this.containerElement.dispatchEvent(quitEvent);
+        this._containerElement.dispatchEvent(quitEvent);
+    }
+
+    _registerSubmitFromSelect() {
+        const button = document.getElementById("editQuizButton");
+        this._editQuizSelect = document.getElementById("editQuizSelect")
+        button.addEventListener("submit", (event) => {
+            event.preventDefault();
+        })
+    }
+
+    _registerFormSubmitListener() {
+        const form = this._containerElement.getElementsByTagName("form")[0];
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            this.save();
+        }) 
+    }
+
+    _registerAddQuestionButtonListener() {
+        this._addQuestionButton.addEventListener("click", () => {
+            this._addQuestion();
+        })
+    }
+
+    _addQuestion() {
+        const newHR = document.createElement("hr");
+        this._questionsContainer.appendChild(newHR);
+        this._addInputElementsForOneQuestion()
     }
 
     _createInputElements() {
@@ -126,7 +122,7 @@ class QuizBuilder {
     }
 
     _addInputElementsForOneQuestion(questionData) {
-        this.questionsContainer = document.getElementById("questionsContainer");
+        this._questionsContainer = document.getElementById("questionsContainer");
 
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
@@ -149,13 +145,13 @@ class QuizBuilder {
         const choicesHeader = document.createElement("text");
         const answerHeader = document.createElement("text");
 
-        this.questionsContainer.appendChild(questionTextHeader);
-        this.questionsContainer.appendChild(questionText);
-        this.questionsContainer.appendChild(choicesHeader);
-        this.questionsContainer.appendChild(choices);
-        this.questionsContainer.appendChild(answerHeader);
-        this.questionsContainer.appendChild(answer);
-        this.questionsContainer.appendChild(error);
+        this._questionsContainer.appendChild(questionTextHeader);
+        this._questionsContainer.appendChild(questionText);
+        this._questionsContainer.appendChild(choicesHeader);
+        this._questionsContainer.appendChild(choices);
+        this._questionsContainer.appendChild(answerHeader);
+        this._questionsContainer.appendChild(answer);
+        this._questionsContainer.appendChild(error);
         
         questionTextHeader.textContent = "Type in a question:";
         choicesHeader.textContent = "Type in the choices (comma separated): ";
@@ -182,15 +178,15 @@ class QuizBuilder {
             const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
             const answerIsInChoices = arrayChoices.includes(answerValue.trim())
             if (answerIsInChoices) {
-                this.allQuestionsAreValid = true;
+                this._allQuestionsAreValid = true;
                 errorElement.style.display = "none";
-                this.saveButton.disabled = false;
+                this._saveButton.disabled = false;
                 answerElement.style.borderColor = "";
             } else {
                 errorElement.style.display = "block";
                 errorElement.textContent = "This answer is not available as a choice";
-                this.allQuestionsAreValid = false;
-                this.saveButton.disabled = true;
+                this._allQuestionsAreValid = false;
+                this._saveButton.disabled = true;
                 answerElement.style.borderColor = "red";
                 answerElement.style.borderRadius = "5px"
             }
@@ -240,8 +236,15 @@ class QuizBuilder {
 
     _addOverflowStylesToQuestionContainer() {
         if (this.questionsContainerMaxHeight) {
-            this.containerElement.style.setProperty('--questions-max-height', this.questionsContainerMaxHeight);
-            this.questionsContainer.classList.add("overflowScroll");
+            this._containerElement.style.setProperty('--questions-max-height', this.questionsContainerMaxHeight);
+            this._questionsContainer.classList.add("overflowScroll");
         }
+    }
+}
+
+class QuizData {
+    constructor(title, questions) {
+        this.title = title;
+        this.questions = questions;
     }
 }
