@@ -67,12 +67,7 @@
 
 .btn:hover {
     cursor: pointer;
-    background-color: #3399ff;
-    color: #fff;
-}
-
-.btn:active {
-    background-color: rgb(1, 22, 209);
+    color: blue;
 }
 
 #score {
