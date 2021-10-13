@@ -88,11 +88,11 @@ p {
 
 @media screen and (max-width: 768px) {
     .container {
-      padding: 1px;
+      padding: 0;
     }
     .quiz-box {
-        margin-top: 1px;
-        padding: 1px;
+        margin-top: 0;
+        padding: 0;
     }
 
     #quizChooser {
