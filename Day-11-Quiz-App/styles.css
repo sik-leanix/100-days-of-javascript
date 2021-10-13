@@ -36,8 +36,10 @@ p {
 
 
 .backLink {
+    display: block;
     font-size: 1.25rem;
     color: blue;
+    margin-bottom: 8px;
 }
 
 
