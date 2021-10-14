@@ -16,6 +16,7 @@ p {
     line-height: 1.5;
 }
 
+
 .quiz-box {
     margin-top: 10vh;
     background-color: #eee;
@@ -35,11 +36,14 @@ p {
 
 
 .backLink {
+    display: block;
     font-size: 1.25rem;
     color: blue;
+    margin-bottom: 8px;
 }
 
-.editQuiz {
+
+.editQuizInput {
     background-color: #ddd;
     font-size: 1.8rem;
     color: black;
@@ -49,23 +53,68 @@ p {
     padding: 1rem;
     outline: none;
 }
-#deleteQuizButton {
-    padding-left: 7px;
-    width: 11%;
-    cursor: pointer;
-    background-color: red;
-    border-color: red;
-}
 
 .customQuizButton {
     text-align: center
 }
 
+#createQuizButton {
+    background-color: #3ccd55;
+}
+
+.editAndDeleteQuizContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
 #editQuizSelect {
-    width: 78%;
+    flex-grow: 1;
 }
 
 #editQuizButton {
-    width: 10%;
+    justify-content: center;
+    width: 100px;
     cursor: pointer;
 }
+
+#deleteQuizButton {
+    padding-left: 8px;
+    justify-content: center;
+    width: 100px;
+    cursor: pointer;
+    background-color: red;
+    border-color: red;
+}
+
+
+@media screen and (max-width: 768px) {
+    .container {
+      padding: 0;
+    }
+    .quiz-box {
+        margin-top: 0;
+        padding: 0;
+    }
+
+    #quizChooser {
+        padding: 10px;
+    }
+    
+    #customQuizContainer {
+        padding: 10px;
+    }
+    .editAndDeleteQuizContainer {
+        gap: 0;
+    }
+    #editQuizSelect {
+        width: 99%;
+    }
+    #editQuizButton {
+        width: 48%;
+        margin-right: 4%;
+    }
+    #deleteQuizButton {
+        width: 48%;
+    }
+  }
