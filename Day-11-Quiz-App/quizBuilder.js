@@ -126,7 +126,7 @@ class QuizBuilder {
 
         this._questionsContainer = document.getElementById("questionsContainer");
         
-        const createHR = document.createElement("hr");
+        const separatorHr = document.createElement("hr");
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
         const answer = document.createElement("input");
@@ -144,7 +144,7 @@ class QuizBuilder {
         const choicesHeader = document.createElement("text");
         const answerHeader = document.createElement("text");
 
-        this._questionsContainer.appendChild(createHR);
+        this._questionsContainer.appendChild(separatorHr);
         this._questionsContainer.appendChild(questionTextHeader);
         
         // Here starts the delete Button
@@ -154,17 +154,17 @@ class QuizBuilder {
             removeQuestionButton.textContent = "X";
             removeQuestionButton.className = "removeQuestionButton";
             choicesHeader.style.display = "inline-block";
-                removeQuestionButton.addEventListener("click", (event) => {
+            removeQuestionButton.addEventListener("click", (event) => {
                 event.preventDefault();
                 questionTextHeader.remove();
                 questionText.remove();
                 choicesHeader.remove();
                 choices.remove();
-                createHR.remove();
+                separatorHr.remove();
                 answerHeader.remove();
                 answer.remove();
                 error.remove()
-                removeQuestionButton.remove();error
+                removeQuestionButton.remove();
             })
         }
         
@@ -197,7 +197,7 @@ class QuizBuilder {
         questionText.className = "inputStyles questionText";
         choices.className = "inputStyles questionChoices";
         answer.className = "inputStyles questionAnswer";
-        error.className = "error"        
+        error.className = "error";
     }
 
     _registerInputValidation(choicesElement, answerElement, errorElement) {
