@@ -32,7 +32,7 @@
 }
 
 .inputHeaderStyle {
-    display: block;
+    display: inline-block;
     font-size: 1.5rem;
 }
 .questionAnswer {
@@ -79,5 +79,11 @@
     .inputStyles {
         width: 90%;
     }
-  }
+}
+
+
   
+.removeQuestionButton {
+    border-radius: 5px;
+    float: right;
+}

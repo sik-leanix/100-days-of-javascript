@@ -6,6 +6,7 @@ class QuizBuilder {
         this._containerElement = document.getElementById(entryElementId)
         this.questionsContainerMaxHeight = questionsContainerMaxHeight;
         this.quizDataToEdit = quizDataToEdit;
+        this._pressedAddQuestionButtonCounter = 0;
     }
 
     _quizBuilderHTMLBody() {
@@ -17,7 +18,6 @@ class QuizBuilder {
                 <input id="quizTitle" class="inputStyles questionTitle" placeholder = "Type in a quiz name..." required></input>
             </div>
             <h2>Questions</h2>
-            <hr>
             <div id="questionsContainer">
             </div>
             <div>
@@ -46,6 +46,7 @@ class QuizBuilder {
             this._addOverflowStylesToQuestionContainer();
         }
         this._registerSubmitFromSelect();
+        this._pressedAddQuestionButtonCounter = 0;
     }
 
     save() {
@@ -78,6 +79,7 @@ class QuizBuilder {
         this._containerElement.textContent = '';
         const quitEvent = new Event("QuizBuilder:quit");
         this._containerElement.dispatchEvent(quitEvent);
+        this._pressedAddQuestionButtonCounter = 0;
     }
 
     _registerSubmitFromSelect() {
@@ -102,10 +104,9 @@ class QuizBuilder {
         })
     }
 
-    _addQuestion() {
-        const newHR = document.createElement("hr");
-        this._questionsContainer.appendChild(newHR);
-        this._addInputElementsForOneQuestion()
+     _addQuestion() {
+        this._pressedAddQuestionButtonCounter++; 
+        this._addInputElementsForOneQuestion();
     }
 
     _createInputElements() {
@@ -122,8 +123,10 @@ class QuizBuilder {
     }
 
     _addInputElementsForOneQuestion(questionData) {
-        this._questionsContainer = document.getElementById("questionsContainer");
 
+        this._questionsContainer = document.getElementById("questionsContainer");
+        
+        const separatorHr = document.createElement("hr");
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
         const answer = document.createElement("input");
@@ -132,11 +135,7 @@ class QuizBuilder {
         choices.setAttribute("required", "");  
         answer.setAttribute("required", "");  
 
-        if (questionData) {
-            choices.value = questionData.choices;
-            answer.value = questionData.answer;
-            questionText.value = questionData.text;
-        }
+        
 
         this._registerInputValidation(choices, answer, error)
         
@@ -145,7 +144,37 @@ class QuizBuilder {
         const choicesHeader = document.createElement("text");
         const answerHeader = document.createElement("text");
 
+        this._questionsContainer.appendChild(separatorHr);
         this._questionsContainer.appendChild(questionTextHeader);
+        
+        // Here starts the delete Button
+        if (this._pressedAddQuestionButtonCounter != 0) {
+            const removeQuestionButton = document.createElement("button");
+            this._questionsContainer.appendChild(removeQuestionButton);
+            removeQuestionButton.textContent = "X";
+            removeQuestionButton.className = "removeQuestionButton";
+            choicesHeader.style.display = "inline-block";
+            removeQuestionButton.addEventListener("click", (event) => {
+                event.preventDefault();
+                questionTextHeader.remove();
+                questionText.remove();
+                choicesHeader.remove();
+                choices.remove();
+                separatorHr.remove();
+                answerHeader.remove();
+                answer.remove();
+                error.remove()
+                removeQuestionButton.remove();
+            })
+        }
+        
+        if (questionData) {
+            choices.value = questionData.choices;
+            answer.value = questionData.answer;
+            questionText.value = questionData.text;
+            this._pressedAddQuestionButtonCounter++;
+        }
+
         this._questionsContainer.appendChild(questionText);
         this._questionsContainer.appendChild(choicesHeader);
         this._questionsContainer.appendChild(choices);
@@ -168,7 +197,7 @@ class QuizBuilder {
         questionText.className = "inputStyles questionText";
         choices.className = "inputStyles questionChoices";
         answer.className = "inputStyles questionAnswer";
-        error.className = "error"
+        error.className = "error";
     }
 
     _registerInputValidation(choicesElement, answerElement, errorElement) {
