@@ -4,7 +4,7 @@
 .quizBuilderContainer {
     padding: 0 20px 20px 20px;
     background-color: #eee;
-    border: 3px solid rgb(1, 22, 209);
+    border: 3px solid transparent;
     border-radius: 5px;
 }
 
