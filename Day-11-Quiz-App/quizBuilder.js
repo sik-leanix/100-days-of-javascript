@@ -200,12 +200,13 @@ class QuizBuilder {
         error.className = "error";
     }
 
-    _registerInputValidation(choicesElement, answerElement, errorElement) {
-        const validateAnswer = () => {
+    _registerInputValidation(choicesElement, answerElement, errorElement, titleElement) {
+        const validateAnswerIsInChoices = () => {
             const answerValue = answerElement.value;
             const choicesValue = choicesElement.value;  
             const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
             const answerIsInChoices = arrayChoices.includes(answerValue.trim())
+            console.log(arrayChoices)
             if (answerIsInChoices) {
                 this._allQuestionsAreValid = true;
                 errorElement.style.display = "none";
@@ -220,8 +221,17 @@ class QuizBuilder {
                 answerElement.style.borderRadius = "5px"
             }
         }
-        answerElement.addEventListener('input', validateAnswer);
-        choicesElement.addEventListener('input', validateAnswer);
+        const validateValueIsJustWhiteSpace = () => {
+            const titleValue = titleElement.value;
+            const answerValue = answerElement.value;
+            const choicesValue = choicesElement.value;  
+            const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
+            answerValue.trim();
+
+        }
+        answerElement.addEventListener('input', validateAnswerIsInChoices, validateValueIsJustWhiteSpace);
+        choicesElement.addEventListener('input', validateAnswerIsInChoices, validateValueIsJustWhiteSpace);
+        titleElement.addEventListener('input', validateValueIsJustWhiteSpace);
     }
 
     _getQuestionsArrayFromInputValues() {
