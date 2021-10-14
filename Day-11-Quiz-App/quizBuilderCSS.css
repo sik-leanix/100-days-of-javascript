@@ -79,11 +79,11 @@
     .inputStyles {
         width: 90%;
     }
-  }
+}
 
-  .removeQuestionButton {
-    display: inline-block;
+
+  
+.removeQuestionButton {
     border-radius: 5px;
     float: right;
 }
-  
