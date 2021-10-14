@@ -32,7 +32,7 @@
 }
 
 .inputHeaderStyle {
-    display: block;
+    display: inline-block;
     font-size: 1.5rem;
 }
 .questionAnswer {
@@ -80,4 +80,10 @@
         width: 90%;
     }
   }
+
+  .removeQuestionButton {
+    display: inline-block;
+    border-radius: 5px;
+    float: right;
+}
   

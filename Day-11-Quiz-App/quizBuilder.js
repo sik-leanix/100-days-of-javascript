@@ -103,7 +103,7 @@ class QuizBuilder {
     }
 
     _addQuestion() {
-        const newHR = document.createElement("hr");
+        const newHR = document.createElement("hr"); 
         this._questionsContainer.appendChild(newHR);
         this._addInputElementsForOneQuestion()
     }
@@ -124,6 +124,7 @@ class QuizBuilder {
     _addInputElementsForOneQuestion(questionData) {
         this._questionsContainer = document.getElementById("questionsContainer");
 
+        const removeQuestionButton = document.createElement("button");
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
         const answer = document.createElement("input");
@@ -146,6 +147,7 @@ class QuizBuilder {
         const answerHeader = document.createElement("text");
 
         this._questionsContainer.appendChild(questionTextHeader);
+        this._questionsContainer.appendChild(removeQuestionButton);
         this._questionsContainer.appendChild(questionText);
         this._questionsContainer.appendChild(choicesHeader);
         this._questionsContainer.appendChild(choices);
@@ -169,6 +171,27 @@ class QuizBuilder {
         choices.className = "inputStyles questionChoices";
         answer.className = "inputStyles questionAnswer";
         error.className = "error"
+
+        // Here starts the delete Button
+
+        
+        
+        removeQuestionButton.textContent = "X";
+        removeQuestionButton.className = "removeQuestionButton";
+        choicesHeader.style.display = "inline-block";
+
+        removeQuestionButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            removeQuestionButton.remove();
+            questionTextHeader.remove();
+            questionText.remove();
+            choicesHeader.remove();
+            choices.remove();
+            answerHeader.remove();
+            answer.remove();
+            error.remove();
+             // TODO: Creating hr in every question
+        })
     }
 
     _registerInputValidation(choicesElement, answerElement, errorElement) {
