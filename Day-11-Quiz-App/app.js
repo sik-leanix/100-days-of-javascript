@@ -53,6 +53,7 @@ class Quiz {
         this.questionIndex = 0;
         const quitEvent = new Event("SidneyQuiz:quit");
         this._containerElement.dispatchEvent(quitEvent);
+        clearInterval(this.quizTimer);
     }
 
     guess(answer) {
@@ -156,15 +157,16 @@ class Quiz {
         const quitButton = document.getElementById("quitQuizButtonEnd");
         quitButton.addEventListener("click", () => this.quit());
         restartButton.addEventListener("click", () => this._reset());
+        clearInterval(this.quizTimer);
     }
 
     _startCountdown() {
-        const time = 10;
+        const time = 0.5;
         const quizTimeInMinutes = time * 60 * 60;
         let quizTime = quizTimeInMinutes / 60;
 
         const countdownElement = document.getElementById("count-down");
-        const quizTimer = setInterval(() => {
+        this.quizTimer = setInterval(() => {
             if (quizTime <= 0) {
                 clearInterval(quizTimer);
                 this._showScores();
