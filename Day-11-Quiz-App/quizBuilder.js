@@ -235,54 +235,38 @@ class QuizBuilder {
             }
         }
         const validateValueIsNotJustWhiteSpace = (fieldType) => {
-            const textElementValue = textElement.value.trim();
-            const choicesElementValue = choicesElement.value.trim();
-            const answerElementValue = answerElement.value.trim();
-            if (fieldType === 'answer') {
-                if (!answerElementValue) {
-                    this._saveButton.disabled = true;
-                    answerError.style.display = "block";
-                    answerError.textContent = "The answer cannot be just whitespace";
-                    answerElement.style.borderColor = "red";
-                    answerElement.style.borderRadius = "5px";
+            const getElementsForValidator = () => {
+                if (fieldType === 'answer') {
+                    return { elementToValidate: answerElement, errorElement: answerError };
+                } else if (fieldType === 'choices') {
+                    return { elementToValidate: choicesElement, errorElement: choicesError };
                 } else {
-                    answerError.style.display = "none";
-                    this._saveButton.disabled = false;
-                    answerElement.style.borderRadius = "";
-                    answerElement.style.borderColor = "";
-                }
-            } else if (fieldType === 'choice') {
-                if(!choicesElementValue) {
-                    this._saveButton.disabled = true;
-                    choicesError.style.display = "block";
-                    choicesError.textContent = "The choice cannot be just whitespace";
-                    choicesElement.style.borderColor = "red";
-                    choicesElement.style.borderRadius = "5px";
-                } else {
-                    choicesError.style.display = "none";
-                    this._saveButton.disabled = false;
-                    choicesElement.style.borderColor = "";
-                    choicesElement.style.borderRadius = "";
-                }
-            } else {
-                if(!textElementValue) {
-                    this._saveButton.disabled = true;
-                    textError.style.display = "block";
-                    textError.textContent = "The question cannot be just whitespace";
-                    textElement.style.borderColor = "red";
-                    textElement.style.borderRadius = "5px";
-                } else {
-                    textError.style.display = "none";
-                    this._saveButton.disabled = false;
-                    textElement.style.borderColor = "";
-                    textElement.style.borderRadius = "";
+                    return { elementToValidate: textElement, errorElement: textError };
                 }
             }
-          
+            const { elementToValidate, errorElement } = getElementsForValidator();
+            if (!elementToValidate.value.trim()) {
+                this._allQuestionsAreValid = false;
+                this._saveButton.disabled = true;
+                errorElement.style.display = "block";
+                errorElement.textContent = `The ${fieldType} cannot be empty/just whitespace`;
+                elementToValidate.style.borderColor = "red";
+                elementToValidate.style.borderRadius = "5px";
+            } else {
+                errorElement.style.display = "none";
+                this._allQuestionsAreValid = true;
+                this._saveButton.disabled = false;
+                elementToValidate.style.borderRadius = "";
+                elementToValidate.style.borderColor = "";
+            }
         }
         answerElement.addEventListener('input', () => { validateValueIsNotJustWhiteSpace('answer'); validateAnswerIsInChoices(); });
-        choicesElement.addEventListener('input', () => { validateValueIsNotJustWhiteSpace('choice'); validateAnswerIsInChoices(); });
+        choicesElement.addEventListener('input', () => { validateValueIsNotJustWhiteSpace('choices'); validateAnswerIsInChoices(); });
         textElement.addEventListener('input', () => validateValueIsNotJustWhiteSpace('question'));
+    }
+
+    _validationForTitle() {
+        
     }
 
     _getQuestionsArrayFromInputValues() {
