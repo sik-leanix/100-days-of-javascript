@@ -45,7 +45,6 @@ class QuizBuilder {
         if (this.questionsContainerMaxHeight) {
             this._addOverflowStylesToQuestionContainer();
         }
-        this._registerSubmitFromSelect();
         this._pressedAddQuestionButtonCounter = 0;
     }
 
@@ -80,14 +79,6 @@ class QuizBuilder {
         const quitEvent = new Event("QuizBuilder:quit");
         this._containerElement.dispatchEvent(quitEvent);
         this._pressedAddQuestionButtonCounter = 0;
-    }
-
-    _registerSubmitFromSelect() {
-        const button = document.getElementById("editQuizButton");
-        this._editQuizSelect = document.getElementById("editQuizSelect")
-        button.addEventListener("submit", (event) => {
-            event.preventDefault();
-        })
     }
 
     _registerFormSubmitListener() {
@@ -130,14 +121,27 @@ class QuizBuilder {
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
         const answer = document.createElement("input");
-        const error = document.createElement("span");
+        const answerError = document.createElement("span");
+        const questionTextError = document.createElement("span");
+        const choicesError = document.createElement("span");
         questionText.setAttribute("required", "");
         choices.setAttribute("required", "");  
         answer.setAttribute("required", "");  
 
-        
+      
 
-        this._registerInputValidation(choices, answer, error)
+        this._registerInputValidation(
+            {
+                textElement: questionText,
+                choicesElement: choices,
+                answerElement: answer
+            },
+            {
+                textError: questionTextError,
+                choicesError: choicesError,
+                answerError: answerError
+            }
+        )
         
 
         const questionTextHeader = document.createElement("text");
@@ -163,8 +167,10 @@ class QuizBuilder {
                 separatorHr.remove();
                 answerHeader.remove();
                 answer.remove();
-                error.remove()
+                answerError.remove()
                 removeQuestionButton.remove();
+                questionTextError.remove();
+                choicesError.remove();
             })
         }
         
@@ -176,11 +182,13 @@ class QuizBuilder {
         }
 
         this._questionsContainer.appendChild(questionText);
+        this._questionsContainer.appendChild(questionTextError);
         this._questionsContainer.appendChild(choicesHeader);
         this._questionsContainer.appendChild(choices);
+        this._questionsContainer.appendChild(choicesError);
         this._questionsContainer.appendChild(answerHeader);
         this._questionsContainer.appendChild(answer);
-        this._questionsContainer.appendChild(error);
+        this._questionsContainer.appendChild(answerError);
         
         questionTextHeader.textContent = "Type in a question:";
         choicesHeader.textContent = "Type in the choices (comma separated): ";
@@ -197,31 +205,68 @@ class QuizBuilder {
         questionText.className = "inputStyles questionText";
         choices.className = "inputStyles questionChoices";
         answer.className = "inputStyles questionAnswer";
-        error.className = "error";
+        answerError.className = "error";
+        choicesError.className = "error";
+        questionTextError.className = "error";
     }
 
-    _registerInputValidation(choicesElement, answerElement, errorElement) {
-        const validateAnswer = () => {
+    _registerInputValidation({ textElement, choicesElement, answerElement }, { textError, choicesError, answerError }) {
+        const validateAnswerIsInChoices = () => {
             const answerValue = answerElement.value;
-            const choicesValue = choicesElement.value;  
+            const choicesValue = choicesElement.value;
+            if (answerValue.trim().length === 0) {
+                return;
+            }
             const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
-            const answerIsInChoices = arrayChoices.includes(answerValue.trim())
-            if (answerIsInChoices) {
-                this._allQuestionsAreValid = true;
-                errorElement.style.display = "none";
-                this._saveButton.disabled = false;
-                answerElement.style.borderColor = "";
+            const answerIsInChoices = arrayChoices.includes(answerValue.trim());
+             if (answerIsInChoices) {
+                    this._allQuestionsAreValid = true;
+                    answerError.style.display = "none";
+                    this._saveButton.disabled = false;
+                    answerElement.style.borderRadius = "";
+                    answerElement.style.borderColor = "";
             } else {
-                errorElement.style.display = "block";
-                errorElement.textContent = "This answer is not available as a choice";
+                answerError.style.display = "block";
+                answerError.textContent = "This answer is not available as a choice";
                 this._allQuestionsAreValid = false;
                 this._saveButton.disabled = true;
                 answerElement.style.borderColor = "red";
-                answerElement.style.borderRadius = "5px"
+                answerElement.style.borderRadius = "5px";
             }
         }
-        answerElement.addEventListener('input', validateAnswer);
-        choicesElement.addEventListener('input', validateAnswer);
+        const validateValueIsNotJustWhiteSpace = (fieldType) => {
+            const getElementsForValidator = () => {
+                if (fieldType === 'answer') {
+                    return { elementToValidate: answerElement, errorElement: answerError };
+                } else if (fieldType === 'choices') {
+                    return { elementToValidate: choicesElement, errorElement: choicesError };
+                } else {
+                    return { elementToValidate: textElement, errorElement: textError };
+                }
+            }
+            const { elementToValidate, errorElement } = getElementsForValidator();
+            if (!elementToValidate.value.trim()) {
+                this._allQuestionsAreValid = false;
+                this._saveButton.disabled = true;
+                errorElement.style.display = "block";
+                errorElement.textContent = `The ${fieldType} cannot be empty/just whitespace`;
+                elementToValidate.style.borderColor = "red";
+                elementToValidate.style.borderRadius = "5px";
+            } else {
+                errorElement.style.display = "none";
+                this._allQuestionsAreValid = true;
+                this._saveButton.disabled = false;
+                elementToValidate.style.borderRadius = "";
+                elementToValidate.style.borderColor = "";
+            }
+        }
+        answerElement.addEventListener('input', () => { validateValueIsNotJustWhiteSpace('answer'); validateAnswerIsInChoices(); });
+        choicesElement.addEventListener('input', () => { validateValueIsNotJustWhiteSpace('choices'); validateAnswerIsInChoices(); });
+        textElement.addEventListener('input', () => validateValueIsNotJustWhiteSpace('question'));
+    }
+
+    _validationForTitle() {
+        
     }
 
     _getQuestionsArrayFromInputValues() {
