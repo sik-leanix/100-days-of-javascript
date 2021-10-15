@@ -45,7 +45,6 @@ class QuizBuilder {
         if (this.questionsContainerMaxHeight) {
             this._addOverflowStylesToQuestionContainer();
         }
-        this._registerSubmitFromSelect();
         this._pressedAddQuestionButtonCounter = 0;
     }
 
@@ -80,14 +79,6 @@ class QuizBuilder {
         const quitEvent = new Event("QuizBuilder:quit");
         this._containerElement.dispatchEvent(quitEvent);
         this._pressedAddQuestionButtonCounter = 0;
-    }
-
-    _registerSubmitFromSelect() {
-        const button = document.getElementById("editQuizButton");
-        this._editQuizSelect = document.getElementById("editQuizSelect")
-        button.addEventListener("submit", (event) => {
-            event.preventDefault();
-        })
     }
 
     _registerFormSubmitListener() {
