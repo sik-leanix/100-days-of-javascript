@@ -121,14 +121,27 @@ class QuizBuilder {
         const questionText = document.createElement("input");
         const choices = document.createElement("input");
         const answer = document.createElement("input");
-        const error = document.createElement("span");
+        const answerError = document.createElement("span");
+        const questionTextError = document.createElement("span");
+        const choicesError = document.createElement("span");
         questionText.setAttribute("required", "");
         choices.setAttribute("required", "");  
         answer.setAttribute("required", "");  
 
-        
+      
 
-        this._registerInputValidation(choices, answer, error)
+        this._registerInputValidation(
+            {
+                textElement: questionText,
+                choicesElement: choices,
+                answerElement: answer
+            },
+            {
+                textError: questionTextError,
+                choicesError: choicesError,
+                answerError: answerError
+            }
+        )
         
 
         const questionTextHeader = document.createElement("text");
@@ -154,8 +167,10 @@ class QuizBuilder {
                 separatorHr.remove();
                 answerHeader.remove();
                 answer.remove();
-                error.remove()
+                answerError.remove()
                 removeQuestionButton.remove();
+                questionTextError.remove();
+                choicesError.remove();
             })
         }
         
@@ -167,11 +182,13 @@ class QuizBuilder {
         }
 
         this._questionsContainer.appendChild(questionText);
+        this._questionsContainer.appendChild(questionTextError);
         this._questionsContainer.appendChild(choicesHeader);
         this._questionsContainer.appendChild(choices);
+        this._questionsContainer.appendChild(choicesError);
         this._questionsContainer.appendChild(answerHeader);
         this._questionsContainer.appendChild(answer);
-        this._questionsContainer.appendChild(error);
+        this._questionsContainer.appendChild(answerError);
         
         questionTextHeader.textContent = "Type in a question:";
         choicesHeader.textContent = "Type in the choices (comma separated): ";
@@ -188,41 +205,84 @@ class QuizBuilder {
         questionText.className = "inputStyles questionText";
         choices.className = "inputStyles questionChoices";
         answer.className = "inputStyles questionAnswer";
-        error.className = "error";
+        answerError.className = "error";
+        choicesError.className = "error";
+        questionTextError.className = "error";
     }
 
-    _registerInputValidation(choicesElement, answerElement, errorElement, titleElement) {
+    _registerInputValidation({ textElement, choicesElement, answerElement }, { textError, choicesError, answerError }) {
         const validateAnswerIsInChoices = () => {
             const answerValue = answerElement.value;
-            const choicesValue = choicesElement.value;  
+            const choicesValue = choicesElement.value;
+            if (answerValue.trim().length === 0) {
+                return;
+            }
             const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
-            const answerIsInChoices = arrayChoices.includes(answerValue.trim())
-            console.log(arrayChoices)
-            if (answerIsInChoices) {
-                this._allQuestionsAreValid = true;
-                errorElement.style.display = "none";
-                this._saveButton.disabled = false;
-                answerElement.style.borderColor = "";
+            const answerIsInChoices = arrayChoices.includes(answerValue.trim());
+             if (answerIsInChoices) {
+                    this._allQuestionsAreValid = true;
+                    answerError.style.display = "none";
+                    this._saveButton.disabled = false;
+                    answerElement.style.borderRadius = "";
+                    answerElement.style.borderColor = "";
             } else {
-                errorElement.style.display = "block";
-                errorElement.textContent = "This answer is not available as a choice";
+                answerError.style.display = "block";
+                answerError.textContent = "This answer is not available as a choice";
                 this._allQuestionsAreValid = false;
                 this._saveButton.disabled = true;
                 answerElement.style.borderColor = "red";
-                answerElement.style.borderRadius = "5px"
+                answerElement.style.borderRadius = "5px";
             }
         }
-        const validateValueIsJustWhiteSpace = () => {
-            const titleValue = titleElement.value;
-            const answerValue = answerElement.value;
-            const choicesValue = choicesElement.value;  
-            const arrayChoices = choicesValue.split(",").map((choice) => choice.trim());
-            answerValue.trim();
-
+        const validateValueIsNotJustWhiteSpace = (fieldType) => {
+            const textElementValue = textElement.value.trim();
+            const choicesElementValue = choicesElement.value.trim();
+            const answerElementValue = answerElement.value.trim();
+            if (fieldType === 'answer') {
+                if (!answerElementValue) {
+                    this._saveButton.disabled = true;
+                    answerError.style.display = "block";
+                    answerError.textContent = "The answer cannot be just whitespace";
+                    answerElement.style.borderColor = "red";
+                    answerElement.style.borderRadius = "5px";
+                } else {
+                    answerError.style.display = "none";
+                    this._saveButton.disabled = false;
+                    answerElement.style.borderRadius = "";
+                    answerElement.style.borderColor = "";
+                }
+            } else if (fieldType === 'choice') {
+                if(!choicesElementValue) {
+                    this._saveButton.disabled = true;
+                    choicesError.style.display = "block";
+                    choicesError.textContent = "The choice cannot be just whitespace";
+                    choicesElement.style.borderColor = "red";
+                    choicesElement.style.borderRadius = "5px";
+                } else {
+                    choicesError.style.display = "none";
+                    this._saveButton.disabled = false;
+                    choicesElement.style.borderColor = "";
+                    choicesElement.style.borderRadius = "";
+                }
+            } else {
+                if(!textElementValue) {
+                    this._saveButton.disabled = true;
+                    textError.style.display = "block";
+                    textError.textContent = "The question cannot be just whitespace";
+                    textElement.style.borderColor = "red";
+                    textElement.style.borderRadius = "5px";
+                } else {
+                    textError.style.display = "none";
+                    this._saveButton.disabled = false;
+                    textElement.style.borderColor = "";
+                    textElement.style.borderRadius = "";
+                }
+            }
+          
         }
-        answerElement.addEventListener('input', validateAnswerIsInChoices, validateValueIsJustWhiteSpace);
-        choicesElement.addEventListener('input', validateAnswerIsInChoices, validateValueIsJustWhiteSpace);
-        titleElement.addEventListener('input', validateValueIsJustWhiteSpace);
+        answerElement.addEventListener('input', () => { validateValueIsNotJustWhiteSpace('answer'); validateAnswerIsInChoices(); });
+        choicesElement.addEventListener('input', () => { validateValueIsNotJustWhiteSpace('choice'); validateAnswerIsInChoices(); });
+        textElement.addEventListener('input', () => validateValueIsNotJustWhiteSpace('question'));
     }
 
     _getQuestionsArrayFromInputValues() {
